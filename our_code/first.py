@@ -1,7 +1,9 @@
 #### DISCLAIMER ####
 # This was produced with the assistance of GPT 4o
 
+import random
 from helper.game import Game
+from lib.interact.structure import StructureType
 from lib.interact.tile import Tile
 from lib.interface.events.moves.move_place_meeple import (
     MovePlaceMeeple,
@@ -14,10 +16,6 @@ from lib.interface.queries.query_place_meeple import QueryPlaceMeeple
 from lib.interface.events.moves.typing import MoveType
 from lib.models.tile_model import TileModel
 
-from our_code.analytics import analyse_board
-
-
-
 
 class BotState:
     def __init__(self) -> None:
@@ -27,6 +25,8 @@ class BotState:
 def main() -> None:
     game = Game()
     bot_state = BotState()
+
+    print("Here")
 
     while True:
         query = game.get_next_query()
@@ -64,14 +64,16 @@ def generate_placement_configurations(coords: set[tuple[int,int]], game: Game):
     grid = game.state.map._grid
 
     directions = {
-        (0, -1): "top",
-        (1, 0): "right",
-        (0, 1): "bottom",
-        (-1, 0): "left",
+        (0, -1): "top_edge",
+        (1, 0): "right_edge",
+        (0, 1): "bottom_edge",
+        (-1, 0): "left_edge",
     }
 
-    ls: list[tuple[int,int,int,Tile]]
+    ls: list[tuple[int,int,int,Tile,int]]
     ls = []
+
+    print(coords)
 
     for x, y in coords:
         for tile_index, tile in enumerate(game.state.my_tiles):
@@ -93,72 +95,98 @@ def generate_placement_configurations(coords: set[tuple[int,int]], game: Game):
                         break
 
                 if valid:
-                    ls.append((x, y, rotation, tile))
+                    ls.append((x, y, rotation, tile, tile_index))
                 tile.rotate_clockwise(1)
 
 
     return ls
+
+def debug_list_tiles_in_hand (game, bot_state):
+    pass
+
+def get_edge(tile, string):
+    return tile.internal_edges[string]
+
+def tile_edge_structures_str(tile) -> str:
+    string = f"left:{get_edge(tile, "left_edge")},right:{get_edge(tile,"right_edge")},top:{get_edge(tile,"top_edge")},bottom:{get_edge(tile,"bottom_edge")}"
+
+    return string
+
+def debug_list_tile (tile):
+
+    if tile is None:
+        print()
+        return
+    print(tile, f" | edges: {tile_edge_structures_str(tile)})")
+
+def debug_list_adjacent_tiles (game, bot_state, x, y):
+    grid = game.state.map._grid
+
+    print("-- Top:", end="")
+    debug_list_tile(grid[y-1][x])
+    print("-- Left:", end="")
+    debug_list_tile(grid[y][x-1])
+    print("-- Right:", end="")
+    debug_list_tile(grid[y][x+1])
+    print("-- Down:", end="")
+    debug_list_tile(grid[y+1][x])
+
 
 def handle_place_tile(
     game: Game, bot_state: BotState, query: QueryPlaceTile
 ) -> MovePlaceTile:
     """Place a tile in the first valid location found on the board - brute force"""
     grid = game.state.map._grid
-    height = len(grid)
-    width = len(grid[0]) if height > 0 else 0
-
-    directions = {
-        (0, -1): "top_edge",
-        (1, 0): "right_edge",
-        (0, 1): "bottom_edge",
-        (-1, 0): "left_edge",
-    }
-
-    print(game.state.event_history)
 
     print("Tiles", game.state.my_tiles)
 
     ## Find availabile insertion positions.
     
+    river_phase = False
+    for card in game.state.my_tiles:
+        currTile = card._to_model()
+        if StructureType.RIVER in game.state.get_tile_structures(currTile).values():
+            river_phase = True
+
     placement_coords: set[tuple[int,int]]
     placement_coords = generate_possible_placement_coordinates(grid)
 
-    placement_list: list[tuple[int,int,int,Tile]]
+    placement_list: list[tuple[int,int,int,Tile, int]]
     placement_list = generate_placement_configurations(placement_coords, game)
 
 
-    best_move = analyse_board (game, placement_list)
+
+    # If river phase, only select river cards.
+    if river_phase:
+
+        i = 0
+        while i < len(placement_list):
+            if StructureType.RIVER not in game.state.get_tile_structures(placement_list[i][3]._to_model()).values():
+                placement_list.pop(i)
+            else:
+                i += 1
+        
+    idx = random.randrange(len(placement_list))
+
+    print(idx)
+
+    print(placement_list[idx])
+
+
+    x, y, rot, tile, tile_idx = placement_list[idx]
+
 
     
+    tile.rotate_clockwise(rot)
 
-    
+    debug_list_adjacent_tiles(game, bot_state, x, y)
+    print("", flush=True)
+    tile.placed_pos = (x, y)
+    bot_state.last_tile = tile._to_model()
 
+    # best_move = analyse_board (game, placement_list)
 
-
-
-
-    for y in range(height):
-        for x in range(width):
-            if grid[y][x] is not None:
-                for tile_index, tile in enumerate(game.state.my_tiles):
-                    print(
-                        f"Checking if tile {tile.tile_type} can be placed near tile - {grid[y][x]}, at {x, y}"
-                    )
-                    for direction in directions:
-                        dx, dy = direction
-                        x1, y1 = (x + dx, y + dy)
-
-                        if game.can_place_tile_at(tile, x1, y1):
-                            tile.placed_pos = (x1, y1)
-                            bot_state.last_tile = tile._to_model()
-                            print("", end="", flush=True)
-                            return game.move_place_tile(
-                                query, tile._to_model(), tile_index
-                            )
-
-    raise ValueError(
-        "No valid tile placement found - this feature has not been implmented yet"
-    )
+    return game.move_place_tile(query, tile._to_model(), tile_idx)
 
 
 def handle_place_meeple(
