@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import json
 import shutil
 from signal import SIGKILL
@@ -18,7 +16,9 @@ def main():
     # python3 match_simulator.py --submissions 3:example_submissions/example.py 2:example_submissions/example2.py --engine
 
     commands = parse_cmd_args(sys.argv[1:])
-
+    sources: list
+    sources = []
+    
     try:
         sources = [
             (int(x.split(":")[0]), x.split(":")[1]) for x in commands["--submissions"]
