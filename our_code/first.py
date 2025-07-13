@@ -18,6 +18,10 @@ from lib.models.tile_model import TileModel
 
 from copy import deepcopy
 
+place_meeple = False
+place_on : StructureType | None
+place_on = None
+
 class BotState:
     def __init__(self) -> None:
         self.last_tile: TileModel | None = None
@@ -191,6 +195,27 @@ def is_river_phase(game: Game) -> bool:
             return True
     return False               
 
+def is_curved_river_tile(tile) -> bool:
+    
+    left_edge = tile.internal_edges["left_edge"]
+    right_edge = tile.internal_edges["right_edge"]
+    top_edge = tile.internal_edges["top_edge"]
+    bottom_edge = tile.internal_edges["bottom_edge"]
+
+    edges = (left_edge, right_edge, top_edge, bottom_edge)
+
+    if sum([1 for x in edges if x == StructureType.RIVER]) < 2:
+        return False
+
+    if left_edge == StructureType.RIVER and right_edge == StructureType.RIVER:
+        return False
+
+    if top_edge == StructureType.RIVER and bottom_edge == StructureType.RIVER:
+        return False
+
+    return True
+     
+    
 def handle_place_tile(
     game: Game, bot_state: BotState, query: QueryPlaceTile
 ) -> MovePlaceTile:
@@ -292,7 +317,42 @@ def handle_place_tile(
 
             i += 1
 
-        
+        chosen = 0
+        max_points = -99
+
+        for i, t in enumerate(placement_list):
+            points = 0
+            
+            x, y, r, currTile = t[:4]
+            if y < 85:
+                if currTile.internal_edges["top_edge"] == StructureType.RIVER:
+                    points += 1
+                if currTile.internal_edges["bottom_edge"] == StructureType.RIVER:
+                    points -= 1
+            if y > 85:
+                if currTile.internal_edges["bottom_edge"] == StructureType.RIVER:
+                    points += 1
+                if currTile.internal_edges["top_edge"] == StructureType.RIVER:
+                    points -= 1
+            if x < 85:
+                if currTile.internal_edges["left_edge"] == StructureType.RIVER:
+                    points += 1
+                if currTile.internal_edges["right_edge"] == StructureType.RIVER:
+                    points -= 1
+            if x > 85:
+                if currTile.internal_edges["right_edge"] == StructureType.RIVER:
+                    points += 1
+                if currTile.internal_edges["left_edge"] == StructureType.RIVER:
+                    points -= 1
+
+            if points > max_points:
+                chosen = i
+                max_points = points
+
+        placement_list = [placement_list[chosen]]
+
+            
+            
     print(f"Placement list len: {len(placement_list)}")
     idx = random.randrange(len(placement_list))
 
@@ -367,6 +427,7 @@ def handle_place_tile(
         print()
     print(f"🚀 Sending tile: {bot_state.last_tile.tile_type}, pos={bot_state.last_tile.pos}, rotation={bot_state.last_tile.rotation}")    
     print(flush=True)
+    game.state.my_tiles[tile_idx].rotate_clockwise(r)
     return game.move_place_tile(query, tile._to_model(), tile_idx)
 
 
@@ -377,6 +438,8 @@ def handle_place_meeple(
     assert bot_state.last_tile is not None
     structures = game.state.get_placeable_structures(bot_state.last_tile)
 
+    print(structures)
+
     x, y = bot_state.last_tile.pos
     tile = game.state.map._grid[y][x]
 
@@ -384,6 +447,9 @@ def handle_place_meeple(
 
     tile_model = bot_state.last_tile
     bot_state.last_tile = None
+
+    if game.state.me.num_meeples == 0:
+        return game.move_place_meeple_pass(query)
 
     print(structures.items())
 
