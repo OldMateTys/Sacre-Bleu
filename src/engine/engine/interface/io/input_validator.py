@@ -125,8 +125,8 @@ class MoveValidator:
                     Tile.get_opposite(edge)
                 ]
                 if neighboring_edge != edge_structure:
-                    print(tile.tile_type, tile.rotation)
-                    print(neighbour_tile.tile_type, neighbour_tile.rotation)
+                    # print(tile.tile_type, tile.rotation)
+                    # print(neighbour_tile.tile_type, neighbour_tile.rotation)
                     raise ValueError(
                         f"You placed a tile in an mismatched position - {edge} mismatch, your edge is {tile.internal_edges[edge]} on rotation {tile.rotation} at coordinates {e.tile.pos} != {neighbour_tile.internal_edges[Tile.get_opposite(edge)]} on rotation {neighbour_tile.rotation} at position {neighbour_tile.placed_pos}"
                     )

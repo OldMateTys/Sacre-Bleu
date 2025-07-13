@@ -1,3 +1,4 @@
+from lib.interface.events.typing import EventPlayerWon
 from engine.config.game_config import (
     MAX_ROUNDS,
     NUM_TILES_DRAWN_PER_ROUND,
@@ -251,12 +252,17 @@ class GameEngine:
 
             for meeple in returning_meeples:
                 meeple._free_meeple()
-                EventPlayerMeepleFreed(
-                    player_id=partial_rewarded_meeple.player_id,
-                    reward=0,
-                    tile=tile._to_model(),
-                    placed_on=edge,
+                self.mutator.commit(
+                    EventPlayerMeepleFreed(
+                        player_id=partial_rewarded_meeple.player_id,
+                        reward=0,
+                        tile=tile._to_model(),
+                        placed_on=edge,
+                    )
                 )
+
+        player, points = self.state.get_player_points()[0]
+        self.mutator.commit(EventPlayerWon(player_id=player, points=points))
 
     def finish(self) -> None:
         # Write the result.

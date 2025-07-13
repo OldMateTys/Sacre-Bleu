@@ -124,6 +124,7 @@ class StateMutator:
             p.player_id: e.num_starting_meeples for p in e.players
         }
 
+        self.state.me.num_meeples = e.num_starting_meeples
         self.state.map.start_river_phase()
 
     def _commit_event_player_meeple_freed(self, e: EventPlayerMeepleFreed) -> None:
