@@ -13,6 +13,7 @@ Whether you are an amateur king or a seasoned emperor, we understand that Carcas
 ## Tiles
 The gameboard for Carcassonne is unique in that it is created dynamically as each game progresses. During each player's turn, they will draw a tile from the pile and place it in a valid position. In total there are 72 land tiles and 12 river tiles. Each tile can display a river, a section of a city, a section of a road, or a monastery.
 
+
 ![Tiles](assets/game_rules/tiles.png)
 
 Note that tiles *W* and *X* depict road-ends and *A* and *B* are monasteries. Every other tile depicts roads and/or towns.
@@ -24,11 +25,12 @@ These are the tokens representing a player's claim over a territory. Each player
 Represents every players’ current score. The scorecard is updated whenever a territory is completed.
 
 # Game Setup
-Once meeple have been allocated, the setup phase of the game will commence. The starting river tile is placed on the board. Then, each player draws another river tile, and then places it as they wish as long as the river is maintained as a contiguous stream. Once the tile denoting the river’s end is drawn and placed, the setup phase concludes.
+Once meeple have been allocated, the setup phase of the game will commence. The starting river tile is placed on the board. Then, each player draws another river tile, and then places it as they wish as long as the river is maintained as a contiguous stream. You may **not** place a river tile in a way such that it forms a u-turn. Once the tile denoting the river’s end is drawn and placed, the setup phase concludes.
 
 ![Rivers](assets/game_rules/river_examples.png)
 
-As seen above, river tiles may also contain monasteries, cities or roads. If such a tile is drawn and placed you will be able to place a meeple and claim it, if you desire. 
+As seen above, river tiles may also contain monasteries, cities or roads. If such a card is drawn and placed you will be able to place a meeple and claim it, if you desire. 
+
 
 For more specific rules on the river, please feel free to check the rules [here](https://wikicarpedia.com/car/River). Note that we are **not** using *The River II*.
 
@@ -53,7 +55,13 @@ Please note that the above is a non-exhaustive list of valid placements. Tiles c
 Once a tile has been placed, the player has the option to use one of their meeples to claim a territory only upon the placed tile. They can only claim a territory if it hasn’t been previously claimed by themselves or another player. For example, if a tile is placed such that a road is now connected to a road that already exists and is claimed by another player, you will not be able to claim it.
 
 If a placed tile creates two unclaimed territories, such as a road and a town, you may claim at most one of those territories on your turn.
-Completing a Territory
+
+### No Valid Placements
+
+In the (very unlikely) scenario that none of the tiles in your current hand can be placed in any valid position,
+you may choose one of your tiles to discard and replace with a new tile in the deck.
+
+## Completing a Territory
 
 ### Roads
 Roads are completed when it has a defined start and end (these can be towns, monasteries or the road-ends) with no gaps or a loop has been formed. Once you have completed a road, you gain 1 point per tile.

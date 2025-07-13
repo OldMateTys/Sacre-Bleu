@@ -1,5 +1,6 @@
 from helper.client_state import ClientSate
 
+from lib.interact.meeple import Meeple
 from lib.interface.events.event_player_bannned import EventPlayerBanned
 from lib.interface.events.event_player_turn_started import EventPlayerTurnStarted
 from lib.interface.events.event_player_won import EventPlayerWon
@@ -126,13 +127,12 @@ class StateMutator:
         self.state.map.start_river_phase()
 
     def _commit_event_player_meeple_freed(self, e: EventPlayerMeepleFreed) -> None:
-        self.state.players_meeples[e.player_id] += 1
-
         x, y = e.tile.pos
         tile = self.state.map._grid[y][x]
 
         assert tile is not None
         tile.internal_claims[e.placed_on] = None
+        self.state.players_meeples[e.player_id] += 1
 
         if e.player_id == self.state.me.player_id:
             self.state.me.num_meeples += 1
@@ -169,7 +169,8 @@ class StateMutator:
         tile = self.state.map._grid[y][x]
 
         assert tile is not None
-        tile.internal_claims[e.placed_on] = None
+        tile.internal_claims[e.placed_on] = Meeple(e.player_id)
+        self.state.players_meeples[e.player_id] -= 1
 
         if e.player_id == self.state.me.player_id:
             self.state.me.num_meeples -= 1

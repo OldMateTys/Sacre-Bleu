@@ -1,3 +1,4 @@
+from lib.config.map_config import MONASTARY_IDENTIFIER
 from lib.interact.map import Map
 from lib.interact.meeple import Meeple
 from lib.interact.tile import Tile, TileModifier
@@ -23,6 +24,13 @@ class GameLogic(SharedGameState):
 
     def _get_claims(self, tile: "Tile", edge: str) -> list[int]:
         players: set[int] = set()
+
+        if edge == MONASTARY_IDENTIFIER:
+            m = tile.internal_claims[edge]
+            if not m:
+                return []
+
+            return [m.player_id]
 
         for connected_tile, e in self._traverse_connected_component(tile, edge):
             meeple = connected_tile.internal_claims[e]

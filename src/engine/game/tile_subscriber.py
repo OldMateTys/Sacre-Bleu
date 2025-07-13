@@ -1,5 +1,6 @@
 from lib.interact.tile import Tile
 from lib.config.scoring import MONASTARY_POINTS
+from lib.config.map_config import MAX_MAP_LENGTH
 
 from abc import ABC, abstractmethod
 from typing import Iterator, final
@@ -54,7 +55,10 @@ class MonastaryNeighbourSubsciber(TileSubsciber):
         self, publisher: "TilePublisherBus", grid: list[list["Tile | None"]] = list()
     ) -> None:
         for x, y in self._watching():
+            assert len(grid) == MAX_MAP_LENGTH
+
             tile = grid[y][x]
+
             if tile is not None:
                 self.filled.add(tile)
         return super().register_to(publisher)
