@@ -183,9 +183,13 @@ class GameEngine:
 
         river_end = Tile.get_river_end_tile()
         river_end.rotate_clockwise(TILE_EDGE_IDS[edge])
-        river_end.placed_pos = TILE_EXTERNAL_POS[edge](x, y)
+        x1, y1 = TILE_EXTERNAL_POS[edge](x, y)
+        river_end.placed_pos = x1, y1
 
-        self.state.map._grid[y][x] = river_end
+        self.state.map._grid[y1][x1] = river_end
+        self.state.map.placed_tiles.append(river_end)
+
+        print("River End Tile")
         self.mutator.commit(EventRiverPhaseCompleted(end_tile=river_end._to_model()))
 
         if EXPANSION:

@@ -100,4 +100,5 @@ class TilePublisherBus:
         assert tile.placed_pos
         for subsciber in self.watchers.get(tile.placed_pos, []):
             if subsciber.on_tile_changed(tile):
+                self.watchers[tile.placed_pos].remove(subsciber)
                 yield subsciber
