@@ -22,7 +22,7 @@ To get started you will have to:
 
 ### Classic Route (At your own risk)
 
-1. The game engine requires at least Python 3.10 (py310).
+1. The game engine requires at least Python 3.12 (py312).
 2. Create the environment `python -m venv .venv`
 3. Activate the environment
 4. Install requirements `pip install -e .`

@@ -6,7 +6,7 @@ from lib.interact.tile import (
     # create_expansion_tiles,
 )
 
-from lib.config.map_config import MAP_CENTER, MAX_MAP_LENGTH
+from lib.config.map_config import MAX_MAP_LENGTH
 
 
 class Map:
@@ -48,7 +48,6 @@ class Map:
 
         self._grid[pos[1]][pos[0]] = river_end_tile
         self.placed_tiles.append(river_end_tile)
-        river_end_tile.placed_pos = MAP_CENTER
 
     def add_expansion_pack(self, expansion_pack: None) -> None:
         pass

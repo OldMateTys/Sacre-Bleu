@@ -152,6 +152,8 @@ class StateMutator:
         self.state.map.placed_tiles.append(tile)
         self.state.players[e.player_id].num_tiles -= 1
 
+        assert tile.rotation == e.tile.rotation
+
     def _commit_public_move_place_tile(self, e: PublicMovePlaceTile) -> None:
         self.state.players[e.player_id].num_tiles -= 1
 
@@ -161,6 +163,8 @@ class StateMutator:
         tile.placed_pos = x, y
         self.state.map._grid[y][x] = tile
         self.state.map.placed_tiles.append(tile)
+        while tile.rotation != e.tile.rotation:
+            tile.rotate_clockwise(1)
 
     def _commit_move_place_meeple(self, e: MovePlaceMeeple) -> None:
         self.state.players_meeples[e.player_id] -= 1

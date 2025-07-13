@@ -32,12 +32,15 @@ class GameState(GameLogic):
         self.event_history: list[EventType] = []
         self.turn_order: list[int] = []
 
+        self.river_phase = True
+
     def _connect_players(self) -> None:
         for player in self.players.values():
             player.connect()
 
     def start_river_phase(self) -> None:
         self.map.start_river_phase()
+        self.river_phase = True
 
     def start_base_phase(self) -> None:
         self.map.start_base_phase()

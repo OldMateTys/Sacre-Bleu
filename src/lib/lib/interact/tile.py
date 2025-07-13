@@ -4,7 +4,7 @@ from lib.interact.structure import StructureType
 from lib.interact.meeple import Meeple
 
 from enum import Enum, auto
-from copy import copy
+from copy import deepcopy
 from collections import namedtuple
 from dotmap import DotMap
 
@@ -48,7 +48,7 @@ class TileModifier(Enum):
         def _point_modifier_config(tm: "TileModifier") -> Callable[[int], int]:
             return {
                 TileModifier.MONASTARY: lambda x: x + 9,
-                TileModifier.EMBLEM: lambda x: x + 1,
+                TileModifier.EMBLEM: lambda x: x + 2,
             }.get(tm, lambda x: x + NO_POINTS)
 
         points: int = StructureType.get_points(structure)
@@ -188,7 +188,7 @@ class Tile:
         self.internal_claims[MONASTARY_IDENTIFIER] = None
 
         self.rotation = 0
-        self.modifiers = modifiers
+        self.modifiers = modifiers if modifiers else []
         self.tile_type = tile_id
         self.placed_pos: tuple[int, int] | None = None
 
@@ -214,7 +214,7 @@ class Tile:
 
     @final
     def clone_add(self, n: int) -> list[Self]:
-        cloned_tiles = [copy(self) for _ in range(n - 1)]
+        cloned_tiles = [deepcopy(self) for _ in range(n - 1)]
         cloned_tiles.append(self)
         return cloned_tiles
 

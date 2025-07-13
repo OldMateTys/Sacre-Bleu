@@ -95,7 +95,8 @@ class Game:
                     continue
 
                 has_any_neighbour = True
-
+                print(tile.internal_edges[edge], edge, tile.rotation, tile.tile_type)
+                print(neighbour_tile.internal_edges[edge_opposite[edge]])
                 if (
                     tile.internal_edges[edge]
                     != neighbour_tile.internal_edges[edge_opposite[edge]]
@@ -104,7 +105,6 @@ class Game:
                     break  # mismatch, try next rotation
 
             else:
-                print("Not working")
                 if has_any_neighbour:
                     print("Returning True")
                     return True
