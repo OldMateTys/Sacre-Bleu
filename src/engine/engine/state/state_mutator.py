@@ -98,6 +98,22 @@ class StateMutator:
         self.state.tile_placed = tile
         tile.placed_pos = move.tile.pos
 
+        x, y = move.tile.pos
+        edges_str = ", ".join(
+            f"{side}={edge.name}"
+            for side, edge in tile.internal_edges.items()
+        )
+        print(
+            f"→ Committed tile:\n"
+            f"   player_id : {move.player_id}\n"
+            f"   tile_type : {tile.tile_type!r}\n"
+            f"   rotation  : {tile.rotation}\n"
+            f"   position  : ({x}, {y})\n"
+            f"   edges     : {edges_str}"
+        )        
+
+        print(f"Available tiles: {self.state.map.available_tiles}")
+
         # Check for any complete connected componentes
         completed_components = self.state.check_any_complete(tile)
 

@@ -4,7 +4,7 @@
 import random
 from helper.game import Game
 from lib.interact.structure import StructureType
-from lib.interact.tile import Tile
+from lib.interact.tile import Tile, TileModifier
 from lib.interface.events.moves.move_place_meeple import (
     MovePlaceMeeple,
     MovePlaceMeeplePass,
@@ -448,7 +448,9 @@ def handle_place_meeple(
     tile_model = bot_state.last_tile
     bot_state.last_tile = None
 
-    if game.state.me.num_meeples == 0:
+    print(f"MY POINTS: {game.state.points}")
+
+    if game.state.me.num_meeples == 0 or TileModifier.RIVER in tile.modifiers:
         return game.move_place_meeple_pass(query)
 
     print(structures.items())

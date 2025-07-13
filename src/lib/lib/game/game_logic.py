@@ -80,14 +80,6 @@ class GameLogic(SharedGameState):
         modify: Callable[[Tile, str], None] = lambda _1, _2: None,
     ) -> Iterator[tuple["Tile", str]]:
         visited = set()
-        print()
-        print("=== DEBUG: _traverse_connected_component ===")
-        print(f"start_tile = {start_tile}")
-        print(f"start tile type(start_tile)")
-        print(f"start_tile.internal_edges = {start_tile.internal_edges}")
-        print(f"edge = {edge}")
-        print(f"internal_edges keys = {list(start_tile.internal_edges.keys())}")       
-        print()
         structure_type = start_tile.internal_edges[edge]
         structure_bridge = TileModifier.get_bridge_modifier(structure_type)
 
