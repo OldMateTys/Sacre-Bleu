@@ -16,6 +16,7 @@ from lib.interface.queries.query_place_meeple import QueryPlaceMeeple
 from lib.interface.events.moves.typing import MoveType
 from lib.models.tile_model import TileModel
 
+from copy import deepcopy
 
 class BotState:
     def __init__(self) -> None:
@@ -25,8 +26,6 @@ class BotState:
 def main() -> None:
     game = Game()
     bot_state = BotState()
-
-    print("Here")
 
     while True:
         query = game.get_next_query()
@@ -70,33 +69,40 @@ def generate_placement_configurations(coords: set[tuple[int,int]], game: Game):
         (-1, 0): "left_edge",
     }
 
-    ls: list[tuple[int,int,int,Tile,int]]
+    ls: list[tuple[int,int,int,Tile,int,dict[StructureType,list[Tile]]]]
     ls = []
 
-    print(coords)
-
     for x, y in coords:
-        for tile_index, tile in enumerate(game.state.my_tiles):
-            for rotation in range(4):
+        for tile_index, base_tile in enumerate(game.state.my_tiles):
+            for r in range(4):
+                tile = deepcopy(base_tile)
+                tile.rotate_clockwise(r)
                 valid = True
+                valid_edges: dict[StructureType,list[Tile]]
+                valid_edges = {}
 
                 for dx, dy in directions.keys():
                     
                     #check tile below
-                    neighbour = grid[y+dy][x+dx]
+                    neighbour = deepcopy(grid[y+dy][x+dx])
 
                     if neighbour is None:
                         continue
 
                     edge = directions[(dx, dy)]
+                    opp_edge = Tile.get_opposite(edge)
                     
-                    if neighbour.internal_edges[Tile.get_opposite(edge)] != tile.internal_edges[edge]:
+                    
+                    if neighbour.internal_edges[opp_edge] != tile.internal_edges[edge]:
                         valid = False
                         break
 
+                    if tile.internal_edges[edge] not in valid_edges:
+                        valid_edges[tile.internal_edges[edge]] = [neighbour]
+                    else:
+                        valid_edges[tile.internal_edges[edge]].append(neighbour)
                 if valid:
-                    ls.append((x, y, rotation, tile, tile_index))
-                tile.rotate_clockwise(1)
+                    ls.append((x, y,r, tile, tile_index, valid_edges))
 
 
     return ls
@@ -131,6 +137,59 @@ def debug_list_adjacent_tiles (game, bot_state, x, y):
     print("-- Down:", end="")
     debug_list_tile(grid[y+1][x])
 
+def log_u_turn_check(t1: Tile, t2: Tile, axis: str) -> None:
+    if axis == "vertical":
+        print("    Compare vertical U-turn:")
+        print(f"      t1.top    = {t1.internal_edges['top_edge']}")
+        print(f"      t2.top    = {t2.internal_edges['top_edge']}")
+        print(f"      t1.bottom = {t1.internal_edges['bottom_edge']}")
+        print(f"      t2.bottom = {t2.internal_edges['bottom_edge']}")
+    else:
+        print("    Compare horizontal U-turn:")
+        print(f"      t1.left  = {t1.internal_edges['left_edge']}")
+        print(f"      t2.left  = {t2.internal_edges['left_edge']}")
+        print(f"      t1.right = {t1.internal_edges['right_edge']}")
+        print(f"      t2.right = {t2.internal_edges['right_edge']}")
+
+def check_u_turn(t1: Tile, t2: Tile, dir: int) -> bool:
+
+    # 1 is check bottom/top, 2 is check left/right
+    if dir not in (1, 2):
+        raise ValueError("Invalid dir parameter in u_turn check.")
+
+    match dir:
+        case 1:
+            if (t1.internal_edges["top_edge"] == StructureType.RIVER and    \
+                t1.internal_edges["top_edge"] == t2.internal_edges["top_edge"]) or \
+               (t1.internal_edges["bottom_edge"] == StructureType.RIVER and 
+                t1.internal_edges["bottom_edge"] == t2.internal_edges["bottom_edge"]):
+                return True
+            else:
+                return False
+        case 2:
+            if  (t1.internal_edges["left_edge"] == StructureType.RIVER and    \
+                t1.internal_edges["left_edge"] == t2.internal_edges["left_edge"]) or \
+                (t1.internal_edges["right_edge"] == StructureType.RIVER and \
+                t1.internal_edges["right_edge"] == t2.internal_edges["right_edge"]):
+                return True
+            else:
+                return False
+
+def is_river_phase(game: Game) -> bool:
+    """
+    Returns True if any tile in the current player's hand has a river edge,
+    indicating the river phase is still active.
+    """
+    for tile in game.state.my_tiles:
+        edges = tile.internal_edges
+        if (
+            edges.left_edge == StructureType.RIVER
+            or edges.right_edge == StructureType.RIVER
+            or edges.top_edge == StructureType.RIVER
+            or edges.bottom_edge == StructureType.RIVER
+        ):
+            return True
+    return False               
 
 def handle_place_tile(
     game: Game, bot_state: BotState, query: QueryPlaceTile
@@ -142,50 +201,172 @@ def handle_place_tile(
 
     ## Find availabile insertion positions.
     
-    river_phase = False
-    for card in game.state.my_tiles:
-        currTile = card._to_model()
-        if StructureType.RIVER in game.state.get_tile_structures(currTile).values():
-            river_phase = True
+    river_phase = is_river_phase(game)
+
+    print(f"River phase: {river_phase}")
+
 
     placement_coords: set[tuple[int,int]]
     placement_coords = generate_possible_placement_coordinates(grid)
 
-    placement_list: list[tuple[int,int,int,Tile, int]]
+    placement_list: list[tuple[int,int,int,Tile, int,dict[StructureType,list[Tile]]]]
     placement_list = generate_placement_configurations(placement_coords, game)
 
+    print("\n=== MY CURRENT TILE HAND ===")
+    for idx, tile in enumerate(game.state.my_tiles):
+        print(f"[{idx}] Tile Type: {tile.tile_type}")
+        print(f"  Rotation: {tile.rotation}")
+        print("  Edge Structures:")
+        print(f"    Left   -> {tile.internal_edges.left_edge}")
+        print(f"    Right  -> {tile.internal_edges.right_edge}")
+        print(f"    Top    -> {tile.internal_edges.top_edge}")
+        print(f"    Bottom -> {tile.internal_edges.bottom_edge}")
+        print("")
+
+        print("\n=== ALL VALID TILE PLACEMENTS ===")
+    if not placement_list:
+        print("No valid placements found.")
+    else:
+        for i, (x, y, r, tile, tile_idx, connection_types) in enumerate(placement_list):
+            print(f"[{i}] Tile {tile.tile_type} (index {tile_idx})")
+            print(f"  Position: ({x}, {y})")
+            print(f"  Rotation: {r}")
+            print("  Edge Structures:")
+            print(f"    Left   -> {tile.internal_edges.left_edge}")
+            print(f"    Right  -> {tile.internal_edges.right_edge}")
+            print(f"    Top    -> {tile.internal_edges.top_edge}")
+            print(f"    Bottom -> {tile.internal_edges.bottom_edge}")
+            print(f"  Connected structures: {[s.name for s in connection_types]}")
+            print("")
 
 
-    # If river phase, only select river cards.
+
+    # If river phase, only select river cards. We remove any cards not connecting to rivers here from the list.
     if river_phase:
-
+        print("\n-- River phase filtering --")    
         i = 0
         while i < len(placement_list):
-            if StructureType.RIVER not in game.state.get_tile_structures(placement_list[i][3]._to_model()).values():
+            # print(f"Testing river connection at placement index {i}: ({placement_list[i][0]}, {placement_list[i][1]}) tile {placement_list[i][3].tile_type}")
+            # If no rivers connect neighbouring tilesd, break
+            print(f"KEYS: {list(placement_list[i][5].keys())}")
+            if StructureType.RIVER not in placement_list[i][5].keys():
+                print("Filtered")
+                
+                # print("  No RIVER connection — discarding")
                 placement_list.pop(i)
-            else:
-                i += 1
+                continue
+            
+            # Check for U-turns. We check if neighbouring river card also has
+            # a river on the adjacent side to the connection (e.g. connect on top/bot,
+            # but both tiles have a river edge on the left)
+            
+            neighbours: list[list[Tile]]
+            neighbours = list(placement_list[i][5].values())
+
+            assert(len(neighbours) == 1)
+            assert(len(neighbours[0]) == 1)
+
+            neighbour: Tile
+            neighbour = deepcopy(neighbours[0][0])
+            
+            nx, ny = (0, 0)
+            
+            if neighbour.placed_pos is not None:
+                nx, ny = neighbour.placed_pos 
+            
+            x, y, r, currTile, tile_idx = placement_list[i][:5]
+
+            # print(f"  Checking for U-turn with neighbor at ({nx}, {ny})")     
+            if x != nx:
+                log_u_turn_check(currTile, neighbour, "vertical")
+                if check_u_turn(currTile, neighbour, 1):
+                   print("  U-turn detected (vertical) — discarding")
+                   placement_list.pop(i)
+                   continue
+            elif y != ny:
+                log_u_turn_check(currTile, neighbour, "horizontal")
+                if check_u_turn(currTile, neighbour, 2):
+                    print("  U-turn detected (horizontal) — discarding")  
+                    placement_list.pop(i)
+                    continue
+
+            i += 1
+
         
+    print(f"Placement list len: {len(placement_list)}")
     idx = random.randrange(len(placement_list))
 
-    print(idx)
+    # print(idx)
 
-    print(placement_list[idx])
+    # print(placement_list[idx])
 
+    x, y, r, tile, tile_idx, connection_types = placement_list[idx]
 
-    x, y, rot, tile, tile_idx = placement_list[idx]
+    # print("TILE!!")
+    # debug_list_tile(tile)
+    # print("ADJACENT!!")
+    # debug_list_adjacent_tiles(game, bot_state, x, y)
 
+    tile = deepcopy(game.state.my_tiles[tile_idx])  # Fresh, unrotated tile
+    print(f"[Before rotation] {tile.tile_type}, edges: {tile.internal_edges}")
 
-    
-    tile.rotate_clockwise(rot)
-
-    debug_list_adjacent_tiles(game, bot_state, x, y)
-    print("", flush=True)
+    tile.rotation = 0
+    tile.rotate_clockwise(r)
+    print(f"[After rotation]  {tile.tile_type}, edges: {tile.internal_edges}")
     tile.placed_pos = (x, y)
     bot_state.last_tile = tile._to_model()
+    
 
     # best_move = analyse_board (game, placement_list)
+    print("\n=== SELECTED TILE PLACEMENT DEBUG ===")
+    print(f"Chosen Tile Type: {tile.tile_type}")
+    print(f"Chosen Tile Rotation: {tile.rotation}")
+    print("Chosen Tile Edge Structures:")
+    print(f"  Left   -> {tile.internal_edges.left_edge}")
+    print(f"  Right  -> {tile.internal_edges.right_edge}")
+    print(f"  Top    -> {tile.internal_edges.top_edge}")
+    print(f"  Bottom -> {tile.internal_edges.bottom_edge}")
+    print(f"Placing at position: ({x}, {y})\n")
 
+    directions = {
+        (0, -1): "top_edge",
+        (0, 1): "bottom_edge",
+        (-1, 0): "left_edge",
+        (1, 0): "right_edge",
+    }
+    opposite_edges = {
+        "top_edge": "bottom_edge",
+        "bottom_edge": "top_edge",
+        "left_edge": "right_edge",
+        "right_edge": "left_edge",
+    }
+
+# Check all 4 neighboring tiles
+    for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+        nx, ny = x + dx, y + dy
+        neighbor_tile = game.state.map._grid[ny][nx]
+        direction = directions[(dx, dy)]
+        opp_direction = opposite_edges[direction]
+
+        print(f"-- Neighbor at ({nx}, {ny}) on {direction}:")
+        if neighbor_tile is None:
+            print("  [EMPTY]")
+        else:
+            print(f"  Neighbor Tile Type: {neighbor_tile.tile_type}")
+            print(f"  Neighbor Rotation: {neighbor_tile.rotation}")
+            print("  Neighbor Edge Structures:")
+            print(f"    Left   -> {neighbor_tile.internal_edges['left_edge']}")
+            print(f"    Right  -> {neighbor_tile.internal_edges['right_edge']}")
+            print(f"    Top    -> {neighbor_tile.internal_edges['top_edge']}")
+            print(f"    Bottom -> {neighbor_tile.internal_edges['bottom_edge']}")
+            print("  ↔ Comparing:")
+            print(f"    Your {direction} = {tile.internal_edges[direction]}")
+            print(f"    vs Neighbor {opp_direction} = {neighbor_tile.internal_edges[opp_direction]}")
+            match = tile.internal_edges[direction] == neighbor_tile.internal_edges[opp_direction]
+            print(f"    → Match: {'YES ✅' if match else 'NO ❌'}")
+        print()
+    print(f"🚀 Sending tile: {bot_state.last_tile.tile_type}, pos={bot_state.last_tile.pos}, rotation={bot_state.last_tile.rotation}")    
+    print(flush=True)
     return game.move_place_tile(query, tile._to_model(), tile_idx)
 
 
