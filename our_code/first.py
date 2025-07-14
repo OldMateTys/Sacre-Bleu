@@ -414,7 +414,9 @@ def handle_place_tile(
         filter_non_river_connections(placement_list)
             
     idx = random.randrange(len(placement_list))
-    idx, meeple, edge = analyse_board (game, placement_list)
+
+     # === From analytics.py, choose best move ===
+     # idx, meeple, edge = analyse_board (game, placement_list)
 
     x, y, r, tile, tile_idx, connection_types = placement_list[idx]
 
