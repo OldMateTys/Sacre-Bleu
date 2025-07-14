@@ -43,7 +43,7 @@ class ClientSate(GameLogic):
                     continue
 
                 for edge, meeple in tile.internal_claims.items():
-                    if meeple and (meeple.player_id == player_id or not player_id):
+                    if meeple and (meeple.player_id == player_id or player_id is None):
                         meeples.append(meeple)
 
         return meeples

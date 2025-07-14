@@ -230,31 +230,37 @@ class GameEngine:
         for tile, edge in tiles_unclaimed:
             players = self.state._get_claims_objs(tile, edge)
 
-            player_meeples = sorted(players.values(), key=len, reverse=True)
+            players_meeples = sorted(players.values(), key=len, reverse=True)
 
-            partial_rewarded_meeple = player_meeples[0][0]
-            returning_meeples = [
-                m for player_meeples in player_meeples[1:] for m in player_meeples
-            ]
+            partial_rewarded_meeples = [players_meeples[0][0]]
+            returning_meeples = []
+
+            for pm in players_meeples[1:]:
+                if pm and len(pm) == len(players_meeples[0]):
+                    partial_rewarded_meeples.append(pm[0])
+
+                elif pm:
+                    returning_meeples.append(pm[0])
 
             reward = self.state._get_reward(tile, edge)
 
-            self.state.players[partial_rewarded_meeple.player_id].points += reward
-            partial_rewarded_meeple._free_meeple()
-            self.mutator.commit(
-                EventPlayerMeepleFreed(
-                    player_id=partial_rewarded_meeple.player_id,
-                    reward=reward,
-                    tile=tile._to_model(),
-                    placed_on=edge,
+            for meeple in partial_rewarded_meeples:
+                self.state.players[meeple.player_id].points += reward
+                meeple._free_meeple()
+                self.mutator.commit(
+                    EventPlayerMeepleFreed(
+                        player_id=meeple.player_id,
+                        reward=reward,
+                        tile=tile._to_model(),
+                        placed_on=edge,
+                    )
                 )
-            )
 
             for meeple in returning_meeples:
                 meeple._free_meeple()
                 self.mutator.commit(
                     EventPlayerMeepleFreed(
-                        player_id=partial_rewarded_meeple.player_id,
+                        player_id=meeple.player_id,
                         reward=0,
                         tile=tile._to_model(),
                         placed_on=edge,
