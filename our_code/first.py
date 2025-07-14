@@ -449,18 +449,17 @@ def handle_place_meeple(
     bot_state.last_tile = None
 
     print(f"MY POINTS: {game.state.points}")
-
-    if game.state.me.num_meeples == 0 or TileModifier.RIVER in tile.modifiers:
+    if len(game.state.get_meeples_placed_by(game.state.me.player_id)) == 0 or TileModifier.RIVER in tile.modifiers:
         return game.move_place_meeple_pass(query)
 
-    print(structures.items())
 
     if structures:
         for edge, _ in structures.items():
             print(f"Edge name: {edge}")
 
-            if (edge == "MONASTARY"):
+            if (edge in ("MONASTARY", "GRASS")):
                 continue
+            
             if game.state._get_claims(tile, edge):
                 continue
 
