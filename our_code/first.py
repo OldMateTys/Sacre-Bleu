@@ -18,9 +18,11 @@ from lib.models.tile_model import TileModel
 
 from copy import deepcopy
 
+from helper.utils import print_map
+
 place_meeple = False
-place_on : StructureType | None
-place_on = None
+place_on : str
+place_on = ""
 
 class BotState:
     def __init__(self) -> None:
@@ -215,28 +217,7 @@ def is_curved_river_tile(tile) -> bool:
 
     return True
      
-    
-def handle_place_tile(
-    game: Game, bot_state: BotState, query: QueryPlaceTile
-) -> MovePlaceTile:
-    """Place a tile in the first valid location found on the board - brute force"""
-    grid = game.state.map._grid
-
-    print("Tiles", game.state.my_tiles)
-
-    ## Find availabile insertion positions.
-    
-    river_phase = is_river_phase(game)
-
-    print(f"River phase: {river_phase}")
-
-
-    placement_coords: set[tuple[int,int]]
-    placement_coords = generate_possible_placement_coordinates(grid)
-
-    placement_list: list[tuple[int,int,int,Tile, int,dict[StructureType,list[Tile]]]]
-    placement_list = generate_placement_configurations(placement_coords, game)
-
+def debug_decision(game: Game, placement_list):
     print("\n=== MY CURRENT TILE HAND ===")
     for idx, tile in enumerate(game.state.my_tiles):
         print(f"[{idx}] Tile Type: {tile.tile_type}")
@@ -265,119 +246,9 @@ def handle_place_tile(
             print("")
 
 
+def debug_selection(game: Game, bot_state: BotState, tile: Tile, x, y):
+    grid = game.state.map._grid
 
-    # If river phase, only select river cards. We remove any cards not connecting to rivers here from the list.
-    if river_phase:
-        print("\n-- River phase filtering --")    
-        i = 0
-        while i < len(placement_list):
-            # print(f"Testing river connection at placement index {i}: ({placement_list[i][0]}, {placement_list[i][1]}) tile {placement_list[i][3].tile_type}")
-            # If no rivers connect neighbouring tilesd, break
-            print(f"KEYS: {list(placement_list[i][5].keys())}")
-            if StructureType.RIVER not in placement_list[i][5].keys():
-                print("Filtered")
-                
-                # print("  No RIVER connection — discarding")
-                placement_list.pop(i)
-                continue
-            
-            # Check for U-turns. We check if neighbouring river card also has
-            # a river on the adjacent side to the connection (e.g. connect on top/bot,
-            # but both tiles have a river edge on the left)
-            
-            neighbours: list[list[Tile]]
-            neighbours = list(placement_list[i][5].values())
-
-            assert(len(neighbours) == 1)
-            assert(len(neighbours[0]) == 1)
-
-            neighbour: Tile
-            neighbour = deepcopy(neighbours[0][0])
-            
-            nx, ny = (0, 0)
-            
-            if neighbour.placed_pos is not None:
-                nx, ny = neighbour.placed_pos 
-            
-            x, y, r, currTile, tile_idx = placement_list[i][:5]
-
-            # print(f"  Checking for U-turn with neighbor at ({nx}, {ny})")     
-            if x != nx:
-                log_u_turn_check(currTile, neighbour, "vertical")
-                if check_u_turn(currTile, neighbour, 1):
-                   print("  U-turn detected (vertical) — discarding")
-                   placement_list.pop(i)
-                   continue
-            elif y != ny:
-                log_u_turn_check(currTile, neighbour, "horizontal")
-                if check_u_turn(currTile, neighbour, 2):
-                    print("  U-turn detected (horizontal) — discarding")  
-                    placement_list.pop(i)
-                    continue
-
-            i += 1
-
-        chosen = 0
-        max_points = -99
-
-        for i, t in enumerate(placement_list):
-            points = 0
-            
-            x, y, r, currTile = t[:4]
-            if y < 85:
-                if currTile.internal_edges["top_edge"] == StructureType.RIVER:
-                    points += 1
-                if currTile.internal_edges["bottom_edge"] == StructureType.RIVER:
-                    points -= 1
-            if y > 85:
-                if currTile.internal_edges["bottom_edge"] == StructureType.RIVER:
-                    points += 1
-                if currTile.internal_edges["top_edge"] == StructureType.RIVER:
-                    points -= 1
-            if x < 85:
-                if currTile.internal_edges["left_edge"] == StructureType.RIVER:
-                    points += 1
-                if currTile.internal_edges["right_edge"] == StructureType.RIVER:
-                    points -= 1
-            if x > 85:
-                if currTile.internal_edges["right_edge"] == StructureType.RIVER:
-                    points += 1
-                if currTile.internal_edges["left_edge"] == StructureType.RIVER:
-                    points -= 1
-
-            if points > max_points:
-                chosen = i
-                max_points = points
-
-        placement_list = [placement_list[chosen]]
-
-            
-            
-    print(f"Placement list len: {len(placement_list)}")
-    idx = random.randrange(len(placement_list))
-
-    # print(idx)
-
-    # print(placement_list[idx])
-
-    x, y, r, tile, tile_idx, connection_types = placement_list[idx]
-
-    # print("TILE!!")
-    # debug_list_tile(tile)
-    # print("ADJACENT!!")
-    # debug_list_adjacent_tiles(game, bot_state, x, y)
-
-    tile = deepcopy(game.state.my_tiles[tile_idx])  # Fresh, unrotated tile
-    print(f"[Before rotation] {tile.tile_type}, edges: {tile.internal_edges}")
-
-    tile.rotation = 0
-    tile.rotate_clockwise(r)
-    print(f"[After rotation]  {tile.tile_type}, edges: {tile.internal_edges}")
-    tile.placed_pos = (x, y)
-    bot_state.last_tile = tile._to_model()
-    
-
-    # best_move = analyse_board (game, placement_list)
     print("\n=== SELECTED TILE PLACEMENT DEBUG ===")
     print(f"Chosen Tile Type: {tile.tile_type}")
     print(f"Chosen Tile Rotation: {tile.rotation}")
@@ -425,8 +296,137 @@ def handle_place_tile(
             match = tile.internal_edges[direction] == neighbor_tile.internal_edges[opp_direction]
             print(f"    → Match: {'YES ✅' if match else 'NO ❌'}")
         print()
+
+    assert(bot_state.last_tile is not None)
     print(f"🚀 Sending tile: {bot_state.last_tile.tile_type}, pos={bot_state.last_tile.pos}, rotation={bot_state.last_tile.rotation}")    
     print(flush=True)
+
+    print_map(grid, range(72, 89))
+
+def filter_non_river_connections(placement_list):
+
+    i = 0
+    while i < len(placement_list):
+
+        # If no rivers connect neighbouring tilesd, break
+        print(f"KEYS: {list(placement_list[i][5].keys())}")
+        if StructureType.RIVER not in placement_list[i][5].keys():
+            print("Filtered")
+            
+            # print("  No RIVER connection — discarding")
+            placement_list.pop(i)
+            continue
+        
+        # Check for U-turns. We check if neighbouring river card also has
+        # a river on the adjacent side to the connection (e.g. connect on top/bot,
+        # but both tiles have a river edge on the left)
+        
+        neighbours: list[list[Tile]]
+        neighbours = list(placement_list[i][5].values())
+
+        assert(len(neighbours) == 1)
+        assert(len(neighbours[0]) == 1)
+
+        neighbour: Tile
+        neighbour = deepcopy(neighbours[0][0])
+        
+        nx, ny = (0, 0)
+        
+        if neighbour.placed_pos is not None:
+            nx, ny = neighbour.placed_pos 
+        
+        x, y, r, currTile, tile_idx = placement_list[i][:5]
+
+        if x != nx:
+            log_u_turn_check(currTile, neighbour, "vertical")
+            if check_u_turn(currTile, neighbour, 1):
+               print("  U-turn detected (vertical) — discarding")
+               placement_list.pop(i)
+               continue
+        elif y != ny:
+            log_u_turn_check(currTile, neighbour, "horizontal")
+            if check_u_turn(currTile, neighbour, 2):
+                print("  U-turn detected (horizontal) — discarding")  
+                placement_list.pop(i)
+                continue
+
+        i += 1
+
+    chosen = 0
+    max_points = -99
+
+    for i, t in enumerate(placement_list):
+        points = 0
+        
+        x, y, r, currTile = t[:4]
+        if y < 85:
+            if currTile.internal_edges["top_edge"] == StructureType.RIVER:
+                points += 1
+            if currTile.internal_edges["bottom_edge"] == StructureType.RIVER:
+                points -= 1
+        if y > 85:
+            if currTile.internal_edges["bottom_edge"] == StructureType.RIVER:
+                points += 1
+            if currTile.internal_edges["top_edge"] == StructureType.RIVER:
+                points -= 1
+        if x < 85:
+            if currTile.internal_edges["left_edge"] == StructureType.RIVER:
+                points += 1
+            if currTile.internal_edges["right_edge"] == StructureType.RIVER:
+                points -= 1
+        if x > 85:
+            if currTile.internal_edges["right_edge"] == StructureType.RIVER:
+                points += 1
+            if currTile.internal_edges["left_edge"] == StructureType.RIVER:
+                points -= 1
+
+        if points > max_points:
+            chosen = i
+            max_points = points
+
+    selected = placement_list[chosen]
+    placement_list.clear()
+    placement_list.append(selected)
+
+def handle_place_tile(
+    game: Game, bot_state: BotState, query: QueryPlaceTile
+) -> MovePlaceTile:
+    """Place a tile in the first valid location found on the board - brute force"""
+    grid = game.state.map._grid
+
+    ## Find availabile insertion positions.
+    
+    river_phase = is_river_phase(game)
+
+    # e.g. [(x1, y1), (x2, y2) ... (xn, yn)]
+    placement_coords: set[tuple[int,int]]
+    placement_coords = generate_possible_placement_coordinates(grid)
+
+    # e.g. [(tile_x, tile_y, tile_rotation, tile_object, tile_index_in_hand, tile_valid_edges)]
+    # valid edges is for the river phase filtering
+    placement_list: list[tuple[int,int,int,Tile, int,dict[StructureType,list[Tile]]]]
+    placement_list = generate_placement_configurations(placement_coords, game)
+
+    debug_decision(game, placement_list)
+
+    # If river phase, only select river cards. We remove any cards not connecting to rivers here from the list.
+    if river_phase:
+        filter_non_river_connections(placement_list)
+            
+    idx = random.randrange(len(placement_list))
+    idx, meeple, edge = analyse_board (game, placement_list)
+
+    x, y, r, tile, tile_idx, connection_types = placement_list[idx]
+
+    tile = deepcopy(game.state.my_tiles[tile_idx])  # Fresh, unrotated tile
+
+    tile.rotation = 0
+    tile.rotate_clockwise(r)
+    tile.placed_pos = (x, y)
+    bot_state.last_tile = tile._to_model()
+    
+    debug_selection(game, bot_state, tile, x, y)
+
     game.state.my_tiles[tile_idx].rotate_clockwise(r)
     return game.move_place_tile(query, tile._to_model(), tile_idx)
 
@@ -448,23 +448,25 @@ def handle_place_meeple(
     tile_model = bot_state.last_tile
     bot_state.last_tile = None
 
+    
+    # === DEBUG MESSAGES === 
     print(f"MY POINTS: {game.state.points}")
-    if len(game.state.get_meeples_placed_by(game.state.me.player_id)) == 0 or TileModifier.RIVER in tile.modifiers:
-        return game.move_place_meeple_pass(query)
+    print("Meeples remaining per player:")
+    for player_id, meeples in game.state.players_meeples.items():
+        print(f"  Player {player_id}: {meeples}")
+    print("Meeples placed per player:")
 
 
-    if structures:
-        for edge, _ in structures.items():
-            print(f"Edge name: {edge}")
+    for player_id in game.state.players:
+        meeples_placed = game.state.get_meeples_placed_by(player_id)
+        print(f"  Player {player_id}: {len(meeples_placed)}: {meeples_placed}")
+    
+    print(flush=True)
 
-            if (edge in ("MONASTARY", "GRASS")):
-                continue
-            
-            if game.state._get_claims(tile, edge):
-                continue
+    #  === END DEBUG ===
 
-            else:
-                return game.move_place_meeple(query, tile_model, placed_on=edge)
+    if place_meeple is True:
+        return game.move_place_meeple(query, tile_model, placed_on=place_on)
 
     return game.move_place_meeple_pass(query)
 
