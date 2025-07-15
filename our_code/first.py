@@ -63,9 +63,7 @@ def generate_possible_placement_coordinates(grid: list[list[Tile | None]]) -> se
 
     return possible_tile_coords
 
-def generate_placement_configurations(coords: set[tuple[int,int]], game: Game):
-
-    grid: list[list[Tile | None]]
+def generate_placement_configurations(coords: set[tuple[int, int]], game: Game):
     grid = game.state.map._grid
 
     directions = {
@@ -75,41 +73,42 @@ def generate_placement_configurations(coords: set[tuple[int,int]], game: Game):
         (-1, 0): "left_edge",
     }
 
-    ls: list[tuple[int,int,int,Tile,int,dict[StructureType,list[Tile]]]]
     ls = []
 
+    # Precompute all rotated versions of each tile
+    rotated_tiles = []
+    for tile_index, base_tile in enumerate(game.state.my_tiles):
+        for r in range(4):
+            tile = deepcopy(base_tile)  # You can optimize this further if tile rotation is pure
+            tile.rotate_clockwise(r)
+            rotated_tiles.append((tile_index, r, tile))
+
     for x, y in coords:
-        for tile_index, base_tile in enumerate(game.state.my_tiles):
-            for r in range(4):
-                tile = deepcopy(base_tile)
-                tile.rotate_clockwise(r)
-                valid = True
-                valid_edges: dict[StructureType,list[Tile]]
-                valid_edges = {}
+        for tile_index, r, tile in rotated_tiles:
+            valid = True
+            valid_edges = {}
 
-                for dx, dy in directions.keys():
-                    
-                    #check tile below
-                    neighbour = deepcopy(grid[y+dy][x+dx])
+            for (dx, dy), edge in directions.items():
+                nx, ny = x + dx, y + dy
 
-                    if neighbour is None:
-                        continue
+                if not (0 <= ny < len(grid) and 0 <= nx < len(grid[0])):
+                    continue
 
-                    edge = directions[(dx, dy)]
-                    opp_edge = Tile.get_opposite(edge)
-                    
-                    
-                    if neighbour.internal_edges[opp_edge] != tile.internal_edges[edge]:
-                        valid = False
-                        break
+                neighbour = grid[ny][nx]
+                if neighbour is None:
+                    continue
 
-                    if tile.internal_edges[edge] not in valid_edges:
-                        valid_edges[tile.internal_edges[edge]] = [neighbour]
-                    else:
-                        valid_edges[tile.internal_edges[edge]].append(neighbour)
-                if valid:
-                    ls.append((x, y,r, tile, tile_index, valid_edges))
+                opp_edge = Tile.get_opposite(edge)
 
+                if neighbour.internal_edges[opp_edge] != tile.internal_edges[edge]:
+                    valid = False
+                    break
+
+                struct_type = tile.internal_edges[edge]
+                valid_edges.setdefault(struct_type, []).append(neighbour)
+
+            if valid:
+                ls.append((x, y, r, tile, tile_index, valid_edges))
 
     return ls
 
@@ -245,6 +244,23 @@ def debug_decision(game: Game, placement_list):
             print(f"  Connected structures: {[s.name for s in connection_types]}")
             print("")
 
+
+def debug_meeples(game):
+    # === DEBUG MESSAGES === 
+    print(f"MY POINTS: {game.state.points}")
+    print("Meeples remaining per player:")
+    for player_id, meeples in game.state.players_meeples.items():
+        print(f"  Player {player_id}: {meeples}")
+    print("Meeples placed per player:")
+
+
+    for player_id in game.state.players:
+        meeples_placed = game.state.get_meeples_placed_by(player_id)
+        print(f"  Player {player_id}: {len(meeples_placed)}: {meeples_placed}")
+    
+    print(flush=True)
+
+    #  === END DEBUG ===
 
 def debug_selection(game: Game, bot_state: BotState, tile: Tile, x, y):
     grid = game.state.map._grid
@@ -407,7 +423,7 @@ def handle_place_tile(
     placement_list: list[tuple[int,int,int,Tile, int,dict[StructureType,list[Tile]]]]
     placement_list = generate_placement_configurations(placement_coords, game)
 
-    debug_decision(game, placement_list)
+    # debug_decision(game, placement_list)
 
     # If river phase, only select river cards. We remove any cards not connecting to rivers here from the list.
     if river_phase:
@@ -427,11 +443,10 @@ def handle_place_tile(
     tile.placed_pos = (x, y)
     bot_state.last_tile = tile._to_model()
     
-    debug_selection(game, bot_state, tile, x, y)
+    # debug_selection(game, bot_state, tile, x, y)
 
     game.state.my_tiles[tile_idx].rotate_clockwise(r)
     return game.move_place_tile(query, tile._to_model(), tile_idx)
-
 
 def handle_place_meeple(
     game: Game, bot_state: BotState, query: QueryPlaceMeeple
@@ -450,22 +465,7 @@ def handle_place_meeple(
     tile_model = bot_state.last_tile
     bot_state.last_tile = None
 
-    
-    # === DEBUG MESSAGES === 
-    print(f"MY POINTS: {game.state.points}")
-    print("Meeples remaining per player:")
-    for player_id, meeples in game.state.players_meeples.items():
-        print(f"  Player {player_id}: {meeples}")
-    print("Meeples placed per player:")
-
-
-    for player_id in game.state.players:
-        meeples_placed = game.state.get_meeples_placed_by(player_id)
-        print(f"  Player {player_id}: {len(meeples_placed)}: {meeples_placed}")
-    
-    print(flush=True)
-
-    #  === END DEBUG ===
+    # debug_meeples(game)
 
     if place_meeple is True:
         return game.move_place_meeple(query, tile_model, placed_on=place_on)
