@@ -149,7 +149,7 @@ class StateMutator:
                 meeple._free_meeple()
                 self.commit(
                     EventPlayerMeepleFreed(
-                        player_id=move.player_id,
+                        player_id=meeple.player_id,
                         reward=reward,
                         tile=t._to_model(),
                         placed_on=e,

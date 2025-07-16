@@ -28,6 +28,7 @@ class TileModifier(Enum):
     BROKEN_ROAD_CENTER = auto()
     OPP_ROAD_BRIDGE = auto()
     OPP_CITY_BRIDGE = auto()
+    BROKEN_CITY = auto()
 
     @final
     @staticmethod
@@ -42,7 +43,7 @@ class TileModifier(Enum):
     def apply_point_modifiers(mods: list["TileModifier"], points: int) -> int:
         def _point_modifier_config(_mod: "TileModifier") -> Callable[[int], int]:
             return {
-                TileModifier.EMBLEM: lambda x: x + 2,
+                TileModifier.EMBLEM: lambda x: x + 1,
             }.get(_mod, lambda x: x + NO_POINTS)
 
         for mod in mods:
@@ -432,6 +433,7 @@ def create_base_tiles() -> list["Tile"]:
             right_edge=StructureType.CITY,
             top_edge=StructureType.GRASS,
             bottom_edge=StructureType.CITY,
+            modifiers=[TileModifier.BROKEN_CITY],
         ).clone_add(tile_counts.I)
     )
 

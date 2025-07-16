@@ -124,14 +124,20 @@ class GameLogic(SharedGameState):
 
             for adjacent_edge in Tile.adjacent_edges(edge):
                 if tile.internal_edges[adjacent_edge] == structure_type:
-                    connected_internal_edges.append(adjacent_edge)
+                    if not (
+                        TileModifier.BROKEN_CITY in tile.modifiers
+                        and structure_type == StructureType.CITY
+                    ):
+                        connected_internal_edges.append(adjacent_edge)
 
             if (
                 not connected_internal_edges
                 and structure_bridge
                 and structure_bridge in tile.modifiers
             ):
-                if tile.internal_edges[Tile.get_opposite(edge)] == structure_type:
+                if StructureType.is_compatible(
+                    structure_type, tile.internal_edges[Tile.get_opposite(edge)]
+                ):
                     connected_internal_edges.append(Tile.get_opposite(edge))
 
             for cid in connected_internal_edges:
