@@ -120,7 +120,7 @@ class GameLogic(SharedGameState):
             if yield_cond(tile, edge):
                 yield tile, edge
 
-            connected_internal_edges = [edge]
+            connected_internal_edges = []
 
             for adjacent_edge in Tile.adjacent_edges(edge):
                 if tile.internal_edges[adjacent_edge] == structure_type:
@@ -129,6 +129,14 @@ class GameLogic(SharedGameState):
                         and structure_type == StructureType.CITY
                     ):
                         connected_internal_edges.append(adjacent_edge)
+
+                        for adjacent_edge2 in Tile.adjacent_edges(adjacent_edge):
+                            if (
+                                tile.internal_edges[adjacent_edge]
+                                == tile.internal_edges[adjacent_edge2]
+                                and adjacent_edge2 not in connected_internal_edges
+                            ):
+                                connected_internal_edges.append(adjacent_edge2)
 
             if (
                 not connected_internal_edges
@@ -139,6 +147,8 @@ class GameLogic(SharedGameState):
                     structure_type, tile.internal_edges[Tile.get_opposite(edge)]
                 ):
                     connected_internal_edges.append(Tile.get_opposite(edge))
+
+            connected_internal_edges.append(edge)
 
             for cid in connected_internal_edges:
                 assert tile.placed_pos is not None
