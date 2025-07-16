@@ -123,8 +123,6 @@ class StateMutator:
         for edge in completed_components:
             reward = self.state._get_reward(tile, edge)
 
-            self.state.tile_placed_claims.add(edge)
-
             for player_id in self.state._get_claims(tile, edge):
                 player = self.state._get_player_from_id(player_id)
 
@@ -133,6 +131,9 @@ class StateMutator:
 
                     if player.points >= POINT_LIMIT:
                         player_point_limit = player.id
+
+            else:
+                self.state.tile_placed_claims.add(edge)
 
             meeples_to_return = list(
                 self.state._traverse_connected_component(
