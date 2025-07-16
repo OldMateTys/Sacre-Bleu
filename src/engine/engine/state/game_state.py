@@ -27,6 +27,7 @@ class GameState(GameLogic):
         self.tiles_exhausted = True
 
         self.tile_placed: Tile | None = None
+        self.tile_placed_claims: set[str] = set()
         self.tile_publisher = TilePublisherBus()
 
         self.event_history: list[EventType] = []

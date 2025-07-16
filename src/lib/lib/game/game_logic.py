@@ -1,6 +1,7 @@
 from lib.config.map_config import MONASTARY_IDENTIFIER
 from lib.interact.map import Map
 from lib.interact.meeple import Meeple
+from lib.interact.structure import StructureType
 from lib.interact.tile import Tile, TileModifier
 
 from collections import defaultdict, deque
@@ -15,15 +16,17 @@ class GameLogic(SharedGameState):
     def _get_claims_objs(self, tile: "Tile", edge: str) -> dict[int, list[Meeple]]:
         players = defaultdict(list)
 
+        if edge == MONASTARY_IDENTIFIER:
+            m = tile.internal_claims[edge]
+            if not m:
+                return {}
+
+            return {m.player_id: [m]}
+
         for connected_tile, e in self._traverse_connected_component(tile, edge):
             meeple = connected_tile.internal_claims[e]
             if meeple is not None:
                 players[meeple.player_id].append(meeple)
-
-        starting_tile_meeple = tile.internal_claims[edge]
-
-        if starting_tile_meeple:
-            players[starting_tile_meeple.player_id].append(starting_tile_meeple)
 
         return players
 
@@ -42,14 +45,9 @@ class GameLogic(SharedGameState):
             if meeple is not None:
                 players.add(meeple.player_id)
 
-        starting_tile_meeple = tile.internal_claims[edge]
-
-        if starting_tile_meeple:
-            players.add(starting_tile_meeple.player_id)
-
         return list(players)
 
-    def _get_reward(self, tile: "Tile", edge: str) -> int:
+    def _get_reward(self, tile: "Tile", edge: str, partial: bool = False) -> int:
         visited_tiles = set()
         structure_type = tile.internal_edges[edge]
 
@@ -60,7 +58,16 @@ class GameLogic(SharedGameState):
                 continue
 
             visited_tiles.add(connected_tile)
-            total_points += TileModifier.apply_point_modifiers(structure_type)
+
+            if not partial:
+                total_points += StructureType.get_points(structure_type)
+
+            else:
+                total_points += StructureType.get_partial_points(structure_type)
+
+            total_points = TileModifier.apply_point_modifiers(
+                tile.modifiers, total_points
+            )
 
         return total_points
 
@@ -90,14 +97,15 @@ class GameLogic(SharedGameState):
         modify: Callable[[Tile, str], None] = lambda _1, _2: None,
     ) -> Iterator[tuple["Tile", str]]:
         visited = set()
-        structure_type = start_tile.internal_edges[edge]
-        structure_bridge = TileModifier.get_bridge_modifier(structure_type)
-
-        queue = deque([(start_tile, edge)])
 
         # Not a traversable edge - ie monastary etc
         if edge not in start_tile.internal_edges.keys():
             return
+
+        structure_type = start_tile.internal_edges[edge]
+        structure_bridge = TileModifier.get_bridge_modifier(structure_type)
+
+        queue = deque([(start_tile, edge)])
 
         while queue:
             tile, edge = queue.popleft()

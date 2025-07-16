@@ -123,6 +123,8 @@ class StateMutator:
         for edge in completed_components:
             reward = self.state._get_reward(tile, edge)
 
+            self.state.tile_placed_claims.add(edge)
+
             for player_id in self.state._get_claims(tile, edge):
                 player = self.state._get_player_from_id(player_id)
 
@@ -231,10 +233,12 @@ class StateMutator:
 
         # Cleanup intermeidate state variables
         self.state.tile_placed = None
+        self.state.tile_placed_claims = set()
 
     def _commit_move_place_meeple_pass(self, move: MovePlaceMeeplePass) -> None:
         # Cleanup intermeidate state variables
         self.state.tile_placed = None
+        self.state.tile_placed_claims = set()
 
     def _commit_event_game_started(self, e: EventGameStarted) -> None:
         """

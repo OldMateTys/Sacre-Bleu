@@ -22,6 +22,15 @@ class StructureType(Enum):
         }.get(structure_type, NO_POINTS)
 
     @staticmethod
+    def get_partial_points(structure_type: "StructureType") -> int:
+        return {
+            StructureType.ROAD: ROAD_POINTS,
+            StructureType.ROAD_START: ROAD_POINTS,
+            StructureType.CITY: CITY_POINTS,
+            # StructureType.GRASS: FARM_POINTS,
+        }.get(structure_type, NO_POINTS)
+
+    @staticmethod
     def can_claim(structure_type: "StructureType") -> bool:
         return {
             StructureType.ROAD: True,

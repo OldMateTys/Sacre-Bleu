@@ -39,21 +39,13 @@ class TileModifier(Enum):
 
     @final
     @staticmethod
-    def apply_point_modifiers(structure: StructureType) -> int:
-        def _get_point_modifiers(structure: StructureType) -> list["TileModifier"]:
+    def apply_point_modifiers(mods: list["TileModifier"], points: int) -> int:
+        def _point_modifier_config(_mod: "TileModifier") -> Callable[[int], int]:
             return {
-                StructureType.CITY: [TileModifier.OPP_CITY_BRIDGE],
-            }.get(structure, [])
-
-        def _point_modifier_config(tm: "TileModifier") -> Callable[[int], int]:
-            return {
-                TileModifier.MONASTARY: lambda x: x + 9,
                 TileModifier.EMBLEM: lambda x: x + 2,
-            }.get(tm, lambda x: x + NO_POINTS)
+            }.get(_mod, lambda x: x + NO_POINTS)
 
-        points: int = StructureType.get_points(structure)
-
-        for mod in _get_point_modifiers(structure):
+        for mod in mods:
             points = _point_modifier_config(mod)(points)
 
         return points
@@ -347,6 +339,7 @@ def create_base_tiles() -> list["Tile"]:
             right_edge=StructureType.GRASS,
             top_edge=StructureType.GRASS,
             bottom_edge=StructureType.ROAD_START,
+            modifiers=[TileModifier.MONASTARY],
         ).clone_add(tile_counts.A)
     )
 
