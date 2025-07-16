@@ -35,12 +35,20 @@ class TileStructData:
 
 
     def compute_score_with_meeple(self) -> float:
-        # TO BE IMPLEMENTED
-        return 1.0
+        # Penalize contested or incomplete structures
+        if not self.free_point:
+            return 0.5 * self.compute_incomplete_score()
+        
+        if self.is_completed:
+            return self.compute_completed_score()
+        
+        return self.compute_incomplete_score() * 0.8  # Boost if not contested
 
     def compute_score_without_meeple(self) -> float:
-        # TO BE IMPLEMENTED
-        return 1.0
+        # Only get points if it's completed and I already own it
+        if self.my_meeples_active > 0 and self.is_completed:
+            return self.compute_completed_score()
+        return 0.0
 
     def compute_completed_score(self):
         
@@ -52,7 +60,8 @@ class TileStructData:
                 pass
             case StructureType.ROAD:
                 return self.num_structs
-        pass
+
+        return 0
 
 
     def compute_incomplete_score(self):
@@ -66,6 +75,8 @@ class TileStructData:
                 return self.num_structs
             case StructureType.GRASS:
                 pass
+        
+        return 0
 
     def free_point_check(self):
         if not self.is_completed:
@@ -117,16 +128,15 @@ class TileData:
             
 def analyse_board (game: Game, placement_list: list[tuple[int,int,int,Tile, int,dict[StructureType,list[Tile]]]]):
     
-
-    score = [0 for _ in placement_list]
-    grid = game.state.map._grid
+    best_score = float('-inf')
+    best_option = 0
+    best_place_meeple = False
+    best_meeple_edge = None
 
     data = []
 
-    extension_tiles = []
-    completion_tiles = []
 
-    for option in placement_list:
+    for i, option in enumerate(placement_list):
         x, y, r, tile, tile_idx, connected_comps = option
         
         placeable_structures = game.state.get_placeable_structures(tile._to_model())
@@ -159,10 +169,23 @@ def analyse_board (game: Game, placement_list: list[tuple[int,int,int,Tile, int,
             
         
         tile_data = TileData(structs_data)
+        score_with_meeple, meeple_edge = tile_data.compute_highest_score_with_meeple()
+        score_without_meeple = tile_data.compute_effective_score_without_meeple()
+
+        score_delta = score_with_meeple - score_without_meeple
+        score = score_with_meeple  # Or choose a smarter mix
+
+        if score > best_score:
+            best_score = score
+            best_option = i
+            best_place_meeple = score_delta > 1.5  # You can tune this threshold
+            best_meeple_edge = meeple_edge if best_place_meeple else None
 
 
-    
-    return 
+        data.append((option, score_with_meeple, score_without_meeple, meeple_edge))
+
+
+    return best_option, best_place_meeple, best_meeple_edge
 
 def find_target_struct_edges(target_structure, tile):
     if target_structure in (StructureType.ROAD, StructureType.ROAD_START):
@@ -225,6 +248,21 @@ def is_my_meeple_on_tile_struct(game: Game, tile, edges, x_prev, y_prev):
                 and edge != relevant_edge
             )
     ) > 0
+
+def get_info(game: Game, tile: Tile, x: int, y: int, targStruct: StructureType, starting_edge: str = "") -> tuple:
+
+    grid = game.state.map._grid
+    original_tile = grid[y][x]  # Should be None, but just in case
+
+    # Place the tile temporarily
+    tile.placed_pos = (x, y)
+    grid[y][x] = tile
+    
+    try:
+        return bfs(game, targStruct, x, y, starting_edge)
+    finally:
+        tile.placed_pos = (0,0)
+        grid[y][x] = original_tile
 
 
 # Obtains as much information as possible about the current game state for a particular structure
