@@ -106,6 +106,7 @@ class StateMutator:
             tile = self.state.map.get_tile_by_type(tile_model.tile_type, pop=True)
 
             self.state.my_tiles.append(tile)
+            self.state.players[e.player_id].num_tiles += 1
 
     def _commit_opponent_drew_tiles(self, e: PublicEventPlayerDrewTiles) -> None:
         if e.player_id == self.state.me.player_id:
