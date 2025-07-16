@@ -56,7 +56,7 @@ def find_target_struct_edges(target_structure, tile):
             if structure == target_structure
         )    
 def get_edge_from_delta(x, y, x_prev, y_prev):
-    dx, dy = x_prev - x, y_prev - y
+    dx, dy = x - x_prev, y - y_prev
     if dx == -1: 
         return "left_edge"
     if dx ==  1: 
@@ -335,6 +335,19 @@ class TestBFS(unittest.TestCase):
         assert(open_ends == 2)
         assert(meeples == 0)
 
+    def test_bfs_monastary(self):
+
+        new_tile = Tile(
+            tile_id="J",
+            left_edge=StructureType.GRASS,
+            right_edge=StructureType.ROAD,
+            top_edge=StructureType.CITY,
+            bottom_edge=StructureType.ROAD,
+                )
+        new_tile.rotate_clockwise(1)
+
+        
+        pass
 
     def test_bfs_isolated_tile(self):
         return

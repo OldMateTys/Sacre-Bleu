@@ -17,3 +17,12 @@ For 5. Probability, We need to do the same calculations as above, in the followi
 
 1. For a given structure we want to evaluate/complete, Find the list of all missing tiles
 
+
+
+# TO DO:
+
+
+1. Add progressive weights for freeing meeples, rather than all at once when freeing.
+2. Prioritise reducing number of open ends on structures we own
+2. Incorporate probability of completion into the formula
+3. Add separate computing for Tri-road

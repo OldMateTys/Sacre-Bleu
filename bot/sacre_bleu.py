@@ -23,6 +23,7 @@ from copy import deepcopy
 from helper.utils import print_map
 
 
+MEEPLE_FREE_SCORE_MODIFIER = 2
 
 
 class TileStructData:
@@ -42,42 +43,67 @@ class TileStructData:
 
         self.is_completed = num_open_ends == 0 or struct_type == StructureType.MONASTARY
         print(f"TILE: {tile}, STRUCT_TYPE: {struct_type}")
+        print(f"TOTAL MEEPLES PLACED: {self.meeples_active}")
 
-    def compute_score_with_meeple(self, game) -> float:
+    def compute_score_gain_with_meeple(self, game) -> float:
         # Penalize contested or incomplete structures
         if self.struct_type == StructureType.MONASTARY:
             return self.get_monastary_score(game)
-        if self.my_meeples_active * 2 < self.meeples_active:
-            return -99
-        if self.free_point_check():
-            return self.compute_completed_score(game)
+        if self.meeples_active:
+            return -99    # If there are meeples active, we cannot place meeple. -99 makes this not a valid option, ever.
+        if self.is_completed:
+            return self.compute_completed_score(game) + self.my_meeples_active * MEEPLE_FREE_SCORE_MODIFIER
         
-        return self.compute_incomplete_score(game)  # Boost if not contested
+        return 0  # Boost if not contested
 
-    def compute_score_without_meeple(self, game) -> float:
-        # Only get points if it's completed and I already own it
+    def compute_score_gain_without_meeple(self, game) -> float:
+
+        # Without placing a meeple, nearby monasteries count towards points
+        point_total = self.get_monastary_score(game)
+
+        # Not placing a meeple on monastary -> no points
         if self.struct_type == StructureType.MONASTARY:
-            return 0.0
+            return point_total
 
+        # If we are the equal or dominant party on this structure, points.
         if self.my_meeples_active * 2 >= self.meeples_active:
+
+            # If completed, we get more points for 
             if self.is_completed:
-                return self.compute_completed_score(game)
+                return self.compute_completed_score(game) + self.my_meeples_active * MEEPLE_FREE_SCORE_MODIFIER
             else:
                 return self.compute_incomplete_score(game)
-        return 0.0
+
+        # else we are not dominant, and receive no points for this structure.
+        return point_total
 
     def get_monastary_score(self, game):
         grid = game.state.map._grid
         x, y = self.x, self.y
         return sum(1 for dx in (x-1,x,x+1) for dy in (y-1,y,y+1) if grid[dy][dx] is not None and (dx != x or dy != y)) + 1
 
+    def get_nearby_monastary_score(self, game):
+        grid = game.state.map._grid
+        x, y = self.x, self.y
+        return sum(1 
+                   for dx in (x-1,x,x+1) 
+                   for dy in (y-1,y,y+1) 
+                   if (dx != x or dy != y) 
+                   and grid[dy][dx] is not None 
+                   and grid[dy][dx].internal_claims[MONASTARY_IDENTIFIER] is not None 
+                   and grid[dy][dx].internal_claims[MONASTARY_IDENTIFIER].player_id == game.state.me.player_id
+                   )
+
     def compute_completed_score(self, _):
         
         match self.struct_type:
             case StructureType.CITY:
-                return 2 * self.num_structs + 2 * self.num_emblems
+                prev_points = self.num_structs - 1 + self.num_emblems
+                prev_points -= 1 if TileModifier.EMBLEM in self.tile.modifiers else 0
+                new_points = 2 * (self.num_structs + self.num_emblems)
+                return new_points - prev_points
             case StructureType.ROAD:
-                return self.num_structs
+                return 1
         return 0
 
 
@@ -85,22 +111,17 @@ class TileStructData:
 
         match self.struct_type:
             case StructureType.CITY:
-                return 1 * self.num_structs + 1 * self.num_emblems
+                return 2 if TileModifier.EMBLEM in self.tile.modifiers else 1
             case StructureType.ROAD:
-                return self.num_structs
+                return 1
         return 0
 
-    def free_point_check(self):
-        if self.meeples_active:
-            return False
-        if self.is_completed:
-            return True
-        return False
 
 
 class TileData:
     def __init__(self, features: list[TileStructData]):
         self.features_info = features
+        self.best_edge = 0
 
 
     def compute_highest_score_with_meeple(self, game):
@@ -114,8 +135,8 @@ class TileData:
         print(f"[DEBUG] Total structures: {len(self.features_info)}")
 
         for idx, struct in enumerate(self.features_info):
-            score_with = struct.compute_score_with_meeple(game)
-            score_without = struct.compute_score_without_meeple(game)
+            score_with = struct.compute_score_gain_with_meeple(game)
+            score_without = struct.compute_score_gain_without_meeple(game)
             meeple_scores.append(score_with)
             non_meeple_scores.append(score_without)
 
@@ -144,12 +165,11 @@ class TileData:
         return highest_score, best_edge
 
     def compute_effective_score_without_meeple(self, game):
-
-        scores = []
+        score = 0
         for struct in self.features_info:
-            scores.append(struct.compute_score_without_meeple(game))
+            score += struct.compute_score_gain_without_meeple(game)
 
-        return sum(scores)
+        return score
 
     def compute_impact_of_meeple(self, game):
         meeple_score, edge = self.compute_highest_score_with_meeple(game)
@@ -226,14 +246,14 @@ def analyse_board (game: Game, placement_list: list[tuple[int,int,int,Tile, int,
                 valid_edges = [edge for edge in Tile.get_edges() if tile.internal_edges[edge] == StructureType.CITY]
                 for edge in valid_edges:
                     x1, x2, x3, x4, x5 = get_info(game, tile, x, y, struct_type, edge)
-                    structs_data.append(TileStructData(tile, struct_type, x1, x2, x3, x4, x5, (x, y), valid_edges))
+                    structs_data.append(TileStructData(tile, struct_type, x1, x2, x3, x4, x5, (x, y), [edge]))
 
             elif tile.tile_type in DISCONNECTED_ROADS and struct_type == StructureType.ROAD_START:
 
                 valid_edges = [edge for edge in Tile.get_edges() if tile.internal_edges[edge] == StructureType.ROAD_START]
                 for edge in valid_edges:
                     x1, x2, x3, x4, x5 = get_info(game, tile, x, y, struct_type, edge)
-                    structs_data.append(TileStructData(tile, struct_type, x1, x2, x3, x4, x5, (x, y), valid_edges))
+                    structs_data.append(TileStructData(tile, struct_type, x1, x2, x3, x4, x5, (x, y), [edge]))
 
             else:
                 valid_edges = [edge for edge in get_all_edges() if find_struct_on_edge(tile, edge) == struct_type]
@@ -248,6 +268,8 @@ def analyse_board (game: Game, placement_list: list[tuple[int,int,int,Tile, int,
             
         
         tile_data = TileData(structs_data)
+        data.append(tile_data)
+
         score_with_meeple, meeple_edge = tile_data.compute_highest_score_with_meeple(game)
         score_without_meeple = tile_data.compute_effective_score_without_meeple(game)
 
@@ -261,7 +283,6 @@ def analyse_board (game: Game, placement_list: list[tuple[int,int,int,Tile, int,
             best_meeple_less_option = i
 
 
-        data.append((option, score_with_meeple, score_without_meeple, meeple_edge))
 
     print("Exiting this function!")
     print(f"Num meeples: {game.state.me.num_meeples}")
@@ -272,10 +293,11 @@ def analyse_board (game: Game, placement_list: list[tuple[int,int,int,Tile, int,
         print("MEEPLE PLACED.")
         print(f"MEEPLE ON STRUCT: {best_meeple_edge}")
         best_place_meeple = True
-        return best_meeple_option, best_place_meeple, best_meeple_edge
+
+        return best_meeple_option, best_place_meeple, best_meeple_edge, data[best_meeple_option]
     else:
         print("NO MEEPLE PLACED.")
-        return best_meeple_less_option, False, None
+        return best_meeple_less_option, False, None, data[best_meeple_option]
 
 
 
@@ -307,28 +329,20 @@ def get_edge_from_delta(x, y, x_prev, y_prev):
     return None  # Shouldn't happen
 
 def is_meeple_on_tile_struct(tile, edges, x_prev, y_prev):
-
     x, y = tile.placed_pos
-    for edge, meeple in tile.internal_claims.items():
+    relevant_edge = get_edge_from_delta(x, y, x_prev, y_prev)
 
-        # Special handling for CITY on disconnected city tiles
-        if edge == MONASTARY_IDENTIFIER and TileModifier.MONASTARY not in tile.modifiers:
-            continue
-
-        print(f"Tile tile: {tile.tile_type}")
-        if tile.tile_type in ("H", "I", "R4") and tile.internal_edges[edge] == StructureType.CITY:
-            # Only check the edge facing the previous tile
-            if edge != get_edge_from_delta(x, y, x_prev, y_prev):
-                continue
-
-        # Skip irrelevant edges
-        if edge not in edges:
-            continue
-
-        if meeple is not None:
-            return meeple.player_id
-
-    return None
+    return sum(
+        1
+        for edge, meeple in tile.internal_claims.items()
+        if edge in edges
+            and meeple is not None
+            and not (
+                tile.tile_type in ("H", "I", "R4")
+                and tile.internal_edges[edge] == StructureType.CITY
+                and edge != relevant_edge
+            )
+    ) > 0
 
 def is_my_meeple_on_tile_struct(game: Game, tile, edges, x_prev, y_prev):
     me = game.state.me.player_id
@@ -372,8 +386,13 @@ def bfs (game: Game, targStruct: StructureType, x: int, y: int, starting_edge: s
     grid = game.state.map._grid
     tile = grid[y][x]
 
+
+
     if tile is None:
         return ()
+
+    print("\n\n\n")
+    print(f"============ START NEW BFS, struct: {targStruct}, xy = ({x}, {y}), edge: {starting_edge}, Tile: {tile}, rotation: {tile.rotation}")
     
     que = deque()
     que.append((x, y, x, y))
@@ -397,7 +416,8 @@ def bfs (game: Game, targStruct: StructureType, x: int, y: int, starting_edge: s
         if tile is None:
             continue
 
-        if (x, y) == (x_prev, y_prev) and targStruct == StructureType.CITY and tile.tile_type in {"H", "I", "R4"}:
+        if (x, y) == (x_prev, y_prev) and (targStruct == StructureType.CITY and tile.tile_type in {"H", "I", "R4"}
+             or targStruct == StructureType.ROAD_START and tile.tile_type in ("W","X","L")):
             edges = [starting_edge] if starting_edge in tile.internal_edges else []
         else:
             edges = list(find_target_struct_edges(targStruct, tile))
@@ -405,18 +425,31 @@ def bfs (game: Game, targStruct: StructureType, x: int, y: int, starting_edge: s
         visited.add((x,y))
         count_structures += 1
 
-        meeples_active += 1 if is_meeple_on_tile_struct(tile, edges, x_prev, y_prev) else 0
+        # Debugging meeple detection
+        print()
+        print(f"\n[DEBUG] Visiting tile at ({x},{y})")
+        print(f"[DEBUG] Tile type: {tile.tile_type}, Edges: {edges}")
+        print(f"[DEBUG] Internal claims: {tile.internal_claims}")
 
-        my_meeples_active += 1 if is_my_meeple_on_tile_struct(game, tile, edges, x_prev, y_prev) else 0
+        has_any_meeple = is_meeple_on_tile_struct(tile, edges, x_prev, y_prev)
+        is_mine = is_my_meeple_on_tile_struct(game, tile, edges, x_prev, y_prev)
 
-        if targStruct in (StructureType.ROAD, StructureType.ROAD_START) and TileModifier.BROKEN_ROAD_CENTER in tile.modifiers:
+        if has_any_meeple:
+            print(f"[DEBUG] Meeple found on structure at ({x},{y})\n")
+            meeples_active += 1
+        if is_mine:
+            print(f"[DEBUG] It's my meeple at ({x},{y})\n")
+            my_meeples_active += 1
+
+        if (x, y) != (x_prev, y_prev) and targStruct in (StructureType.ROAD, StructureType.ROAD_START) and TileModifier.BROKEN_ROAD_CENTER in tile.modifiers:
             continue
 
         if targStruct == StructureType.CITY:
-            if tile.tile_type in ("H", "I", "R4"):
-                continue
             if TileModifier.EMBLEM in tile.modifiers:
                 count_emblems += 1
+            if (x, y) != (x_prev, y_prev) and tile.tile_type in ("H", "I", "R4"):
+                continue
+
 
         if targStruct == StructureType.GRASS and tile.tile_type in ("F","G","U"):
             continue
@@ -451,6 +484,8 @@ def bfs (game: Game, targStruct: StructureType, x: int, y: int, starting_edge: s
                         continue
                     que.append((x, y+1, x, y))
 
+    
+    print(f"============ END BFS, struct: {targStruct}, xy = ({x}, {y}), edge: {starting_edge}")
 
     return count_structures, len(open_ends), meeples_active, my_meeples_active, count_emblems
 
@@ -870,7 +905,7 @@ def handle_place_tile(
 
      # === From analytics.py, choose best move ===
 
-    best_option, meeple, edge = analyse_board (game, placement_list)
+    best_option, meeple, edge, data = analyse_board (game, placement_list)
 
     bot_state.place_meeple = meeple
     bot_state.place_meeple_on_edge = edge
@@ -885,6 +920,10 @@ def handle_place_tile(
     x, y, r, tile, tile_idx, connection_types = placement_list[best_option]
 
     print(f"BEST OPTION IDENTIFIED: {tile}")
+    print("NUMBER OF MEEPLES ON STRUCTS?")
+    print(data)
+    for feature in data.features_info:
+        print(f"STRUCT: {feature.struct_type} | NUM_MEEPLES: {feature.meeples_active}")
     print(f"MEEPLE?: {meeple}")
     if meeple and edge is not None:
         print(f"WHERE?:   {edge}")
