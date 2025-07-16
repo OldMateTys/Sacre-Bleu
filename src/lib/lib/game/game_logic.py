@@ -149,6 +149,8 @@ class GameLogic(SharedGameState):
                     connected_internal_edges.append(Tile.get_opposite(edge))
 
             connected_internal_edges.append(edge)
+            if structure_type == StructureType.ROAD_START:
+                structure_type = StructureType.ROAD
 
             for cid in connected_internal_edges:
                 assert tile.placed_pos is not None
@@ -158,6 +160,15 @@ class GameLogic(SharedGameState):
 
                 if neighbouring_tile:
                     neighbouring_tile_edge = tile.get_opposite(cid)
+                    neighbouring_structure_type = neighbouring_tile.internal_edges[
+                        neighbouring_tile_edge
+                    ]
+
+                    if (
+                        structure_type == StructureType.ROAD
+                        and neighbouring_tile_edge == StructureType.ROAD_START
+                    ):
+                        continue
 
                     if (neighbouring_tile, neighbouring_tile_edge) not in visited:
                         queue.append((neighbouring_tile, neighbouring_tile_edge))
