@@ -1,0 +1,1366 @@
+KEYS: [<StructureType.RIVER: 1>]
+    Compare horizontal U-turn:
+      t1.left  = StructureType.GRASS
+      t2.left  = StructureType.GRASS
+      t1.right = StructureType.RIVER
+      t2.right = StructureType.GRASS
+KEYS: [<StructureType.RIVER: 1>]
+    Compare horizontal U-turn:
+      t1.left  = StructureType.RIVER
+      t2.left  = StructureType.GRASS
+      t1.right = StructureType.GRASS
+      t2.right = StructureType.GRASS
+KEYS: [<StructureType.GRASS: 5>]
+Filtered
+KEYS: [<StructureType.GRASS: 5>]
+Filtered
+KEYS: [<StructureType.GRASS: 5>]
+Filtered
+KEYS: [<StructureType.GRASS: 5>]
+Filtered
+KEYS: [<StructureType.GRASS: 5>]
+Filtered
+KEYS: [<StructureType.GRASS: 5>]
+Filtered
+TILE MODEL: tile_type='R9' pos=(0, 0) rotation=1
+[DEBUG] Total structures: 0
+[DEBUG] Final decision: score=-inf, best_edge=None
+Exiting this function!
+Num meeples: 7
+BEST MEEPLE OPTION: 0
+BEST NON MEEPLE OPTION: 0
+NO MEEPLE PLACED.
+MY CARDS: [Tile R9 - None]
+
+
+AVAILABLE TILES: {Tile R2 - None, Tile R3 - None, Tile R7 - None, Tile R1 - None, Tile R4 - None, Tile R8 - None, Tile R2 - None, Tile R6 - None, Tile R5 - None}
+
+
+
+
+
+BEST OPTION IDENTIFIED: Tile R9 - None
+MEEPLE?: False
+{<StructureType.RIVER: 1>: [Tile RS - (85, 85)]}
+
+=== SELECTED TILE PLACEMENT DEBUG ===
+Chosen Tile Type: R9
+Chosen Tile Rotation: 1
+Chosen Tile Edge Structures:
+  Left   -> StructureType.GRASS
+  Right  -> StructureType.RIVER
+  Top    -> StructureType.GRASS
+  Bottom -> StructureType.RIVER
+Placing at position: (85, 84)
+
+-- Neighbor at (84, 84) on left_edge:
+  [EMPTY]
+
+-- Neighbor at (86, 84) on right_edge:
+  [EMPTY]
+
+-- Neighbor at (85, 83) on top_edge:
+  [EMPTY]
+
+-- Neighbor at (85, 85) on bottom_edge:
+  Neighbor Tile Type: RS
+  Neighbor Rotation: 0
+  Neighbor Edge Structures:
+    Left   -> StructureType.GRASS
+    Right  -> StructureType.GRASS
+    Top    -> StructureType.RIVER
+    Bottom -> StructureType.GRASS
+  ↔ Comparing:
+    Your bottom_edge = StructureType.RIVER
+    vs Neighbor top_edge = StructureType.RIVER
+    → Match: YES ✅
+
+🚀 Sending tile: R9, pos=(85, 84), rotation=1
+
+	. 72 ,  73 ,  74 ,  75 ,  76 ,  77 ,  78 ,  79 ,  80 ,  81 ,  82 ,  83 ,  84 ,  85 ,  86 ,  87 ,  88 , 
+75	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+76	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+77	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+78	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+79	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+80	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+81	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+82	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+83	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+84	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+85	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+86	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+87	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+88	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', 'RS', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+89	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+90	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+### END ###
+CURRENT SCORE: 0
+KEYS: [<StructureType.RIVER: 1>]
+    Compare horizontal U-turn:
+      t1.left  = StructureType.ROAD
+      t2.left  = StructureType.RIVER
+      t1.right = StructureType.ROAD
+      t2.right = StructureType.GRASS
+KEYS: [<StructureType.RIVER: 1>]
+    Compare horizontal U-turn:
+      t1.left  = StructureType.ROAD
+      t2.left  = StructureType.RIVER
+      t1.right = StructureType.ROAD
+      t2.right = StructureType.GRASS
+TILE MODEL: tile_type='R6' pos=(0, 0) rotation=0
+Tile tile: R6
+Tile tile: R6
+Tile tile: R6
+Tile tile: R6
+TILE: Tile R6 - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['left_edge', 'right_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['left_edge', 'right_edge']
+-- left_edge: StructureType.ROAD
+-- right_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=left_edge
+Exiting this function!
+Num meeples: 7
+BEST MEEPLE OPTION: 0
+BEST NON MEEPLE OPTION: 0
+MEEPLE PLACED.
+MEEPLE ON STRUCT: left_edge
+MY CARDS: [Tile R6 - None]
+
+
+AVAILABLE TILES: {Tile R2 - None, Tile R3 - None, Tile R7 - None, Tile R1 - None, Tile R8 - None}
+
+
+
+
+
+BEST OPTION IDENTIFIED: Tile R6 - (0, 0)
+MEEPLE?: True
+WHERE?:   left_edge
+WHICH IS? StructureType.ROAD
+{<StructureType.RIVER: 1>: [Tile R5 - (88, 84)]}
+
+=== SELECTED TILE PLACEMENT DEBUG ===
+Chosen Tile Type: R6
+Chosen Tile Rotation: 0
+Chosen Tile Edge Structures:
+  Left   -> StructureType.ROAD
+  Right  -> StructureType.ROAD
+  Top    -> StructureType.RIVER
+  Bottom -> StructureType.RIVER
+Placing at position: (88, 83)
+
+-- Neighbor at (87, 83) on left_edge:
+  [EMPTY]
+
+-- Neighbor at (89, 83) on right_edge:
+  [EMPTY]
+
+-- Neighbor at (88, 82) on top_edge:
+  [EMPTY]
+
+-- Neighbor at (88, 84) on bottom_edge:
+  Neighbor Tile Type: R5
+  Neighbor Rotation: 0
+  Neighbor Edge Structures:
+    Left   -> StructureType.RIVER
+    Right  -> StructureType.GRASS
+    Top    -> StructureType.RIVER
+    Bottom -> StructureType.GRASS
+  ↔ Comparing:
+    Your bottom_edge = StructureType.RIVER
+    vs Neighbor top_edge = StructureType.RIVER
+    → Match: YES ✅
+
+🚀 Sending tile: R6, pos=(88, 83), rotation=0
+
+	. 72 ,  73 ,  74 ,  75 ,  76 ,  77 ,  78 ,  79 ,  80 ,  81 ,  82 ,  83 ,  84 ,  85 ,  86 ,  87 ,  88 , 
+75	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+76	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+77	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+78	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+79	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+80	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+81	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+82	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+83	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+84	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+85	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+86	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+87	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', 'R9', 'R2', 'R4', 'R5', '__', '__', '__', '__', '__', '__', '__']
+88	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', 'RS', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+89	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+90	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+### END ###
+KEYS: [<StructureType.GRASS: 5>]
+Filtered
+KEYS: [<StructureType.GRASS: 5>]
+Filtered
+KEYS: [<StructureType.GRASS: 5>]
+Filtered
+KEYS: [<StructureType.GRASS: 5>]
+Filtered
+KEYS: [<StructureType.GRASS: 5>]
+Filtered
+KEYS: [<StructureType.GRASS: 5>]
+Filtered
+KEYS: [<StructureType.GRASS: 5>]
+Filtered
+KEYS: [<StructureType.GRASS: 5>]
+Filtered
+KEYS: [<StructureType.GRASS: 5>]
+Filtered
+KEYS: [<StructureType.GRASS: 5>]
+Filtered
+KEYS: [<StructureType.GRASS: 5>]
+Filtered
+KEYS: [<StructureType.GRASS: 5>]
+Filtered
+KEYS: [<StructureType.GRASS: 5>]
+Filtered
+KEYS: [<StructureType.GRASS: 5>]
+Filtered
+KEYS: [<StructureType.GRASS: 5>]
+Filtered
+KEYS: [<StructureType.GRASS: 5>]
+Filtered
+KEYS: [<StructureType.RIVER: 1>]
+    Compare vertical U-turn:
+      t1.top    = StructureType.GRASS
+      t2.top    = StructureType.GRASS
+      t1.bottom = StructureType.GRASS
+      t2.bottom = StructureType.ROAD_START
+KEYS: [<StructureType.RIVER: 1>]
+    Compare vertical U-turn:
+      t1.top    = StructureType.GRASS
+      t2.top    = StructureType.GRASS
+      t1.bottom = StructureType.GRASS
+      t2.bottom = StructureType.ROAD_START
+TILE MODEL: tile_type='R2' pos=(0, 0) rotation=1
+[DEBUG] Total structures: 0
+[DEBUG] Final decision: score=-inf, best_edge=None
+Exiting this function!
+Num meeples: 6
+BEST MEEPLE OPTION: 0
+BEST NON MEEPLE OPTION: 0
+NO MEEPLE PLACED.
+MY CARDS: [Tile R2 - None]
+
+
+AVAILABLE TILES: {Tile R3 - None}
+
+
+
+
+
+BEST OPTION IDENTIFIED: Tile R2 - None
+MEEPLE?: False
+{<StructureType.RIVER: 1>: [Tile R8 - (90, 82)]}
+
+=== SELECTED TILE PLACEMENT DEBUG ===
+Chosen Tile Type: R2
+Chosen Tile Rotation: 1
+Chosen Tile Edge Structures:
+  Left   -> StructureType.RIVER
+  Right  -> StructureType.RIVER
+  Top    -> StructureType.GRASS
+  Bottom -> StructureType.GRASS
+Placing at position: (91, 82)
+
+-- Neighbor at (90, 82) on left_edge:
+  Neighbor Tile Type: R8
+  Neighbor Rotation: 0
+  Neighbor Edge Structures:
+    Left   -> StructureType.RIVER
+    Right  -> StructureType.RIVER
+    Top    -> StructureType.GRASS
+    Bottom -> StructureType.ROAD_START
+  ↔ Comparing:
+    Your left_edge = StructureType.RIVER
+    vs Neighbor right_edge = StructureType.RIVER
+    → Match: YES ✅
+
+-- Neighbor at (92, 82) on right_edge:
+  [EMPTY]
+
+-- Neighbor at (91, 81) on top_edge:
+  [EMPTY]
+
+-- Neighbor at (91, 83) on bottom_edge:
+  [EMPTY]
+
+🚀 Sending tile: R2, pos=(91, 82), rotation=1
+
+	. 72 ,  73 ,  74 ,  75 ,  76 ,  77 ,  78 ,  79 ,  80 ,  81 ,  82 ,  83 ,  84 ,  85 ,  86 ,  87 ,  88 , 
+75	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+76	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+77	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+78	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+79	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+80	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+81	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+82	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+83	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+84	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+85	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', 'R7', 'R1', 'R8', '__', '__', '__', '__', '__']
+86	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', 'R6', '__', '__', '__', '__', '__', '__', '__']
+87	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', 'R9', 'R2', 'R4', 'R5', '__', '__', '__', '__', '__', '__', '__']
+88	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', 'RS', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+89	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+90	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+### END ###
+CURRENT SCORE: 0
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=0
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['bottom_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['bottom_edge', 'left_edge']
+-- bottom_edge: StructureType.ROAD
+-- left_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=bottom_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=1
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['top_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['top_edge', 'left_edge']
+-- top_edge: StructureType.ROAD
+-- left_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=top_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=0
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['bottom_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['bottom_edge', 'left_edge']
+-- bottom_edge: StructureType.ROAD
+-- left_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=bottom_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=1
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['top_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['top_edge', 'left_edge']
+-- top_edge: StructureType.ROAD
+-- left_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=top_edge
+TILE MODEL: tile_type='J' pos=(0, 0) rotation=2
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: J
+TILE: Tile J - (0, 0), STRUCT_TYPE: StructureType.CITY
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: J
+TILE: Tile J - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 2
+[DEBUG] Struct 0: type=StructureType.CITY, score_with=1, score_without=1, edges=['bottom_edge']
+[DEBUG] Struct 1: type=StructureType.ROAD, score_with=1, score_without=1, edges=['top_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 2
+Edges list: ['bottom_edge']
+-- bottom_edge: StructureType.CITY
+[DEBUG] Evaluating struct 1: total score if meeple placed = 2
+[DEBUG] Final decision: score=2, best_edge=bottom_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=0
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['bottom_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['bottom_edge', 'left_edge']
+-- bottom_edge: StructureType.ROAD
+-- left_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=bottom_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=3
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['bottom_edge', 'right_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['bottom_edge', 'right_edge']
+-- bottom_edge: StructureType.ROAD
+-- right_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=bottom_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=0
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['bottom_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['bottom_edge', 'left_edge']
+-- bottom_edge: StructureType.ROAD
+-- left_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=bottom_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=3
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['bottom_edge', 'right_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['bottom_edge', 'right_edge']
+-- bottom_edge: StructureType.ROAD
+-- right_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=bottom_edge
+TILE MODEL: tile_type='J' pos=(0, 0) rotation=1
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: J
+TILE: Tile J - (0, 0), STRUCT_TYPE: StructureType.CITY
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: J
+TILE: Tile J - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 2
+[DEBUG] Struct 0: type=StructureType.CITY, score_with=1, score_without=1, edges=['right_edge']
+[DEBUG] Struct 1: type=StructureType.ROAD, score_with=1, score_without=1, edges=['bottom_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 2
+Edges list: ['right_edge']
+-- right_edge: StructureType.CITY
+[DEBUG] Evaluating struct 1: total score if meeple placed = 2
+[DEBUG] Final decision: score=2, best_edge=right_edge
+TILE MODEL: tile_type='J' pos=(0, 0) rotation=2
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: R7
+Tile tile: R7
+Tile tile: R7
+TILE: Tile J - (0, 0), STRUCT_TYPE: StructureType.CITY
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: J
+TILE: Tile J - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 2
+[DEBUG] Struct 0: type=StructureType.CITY, score_with=-99, score_without=0.0, edges=['bottom_edge']
+[DEBUG] Struct 1: type=StructureType.ROAD, score_with=1, score_without=1, edges=['top_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = -98.0
+Edges list: ['bottom_edge']
+-- bottom_edge: StructureType.CITY
+[DEBUG] Evaluating struct 1: total score if meeple placed = 1.0
+Edges list: ['top_edge', 'left_edge']
+-- top_edge: StructureType.ROAD
+-- left_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1.0, best_edge=top_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=1
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['top_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['top_edge', 'left_edge']
+-- top_edge: StructureType.ROAD
+-- left_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=top_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=2
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['top_edge', 'right_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['top_edge', 'right_edge']
+-- top_edge: StructureType.ROAD
+-- right_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=top_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=1
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['top_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['top_edge', 'left_edge']
+-- top_edge: StructureType.ROAD
+-- left_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=top_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=2
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['top_edge', 'right_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['top_edge', 'right_edge']
+-- top_edge: StructureType.ROAD
+-- right_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=top_edge
+TILE MODEL: tile_type='J' pos=(0, 0) rotation=3
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: J
+TILE: Tile J - (0, 0), STRUCT_TYPE: StructureType.CITY
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: J
+TILE: Tile J - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 2
+[DEBUG] Struct 0: type=StructureType.CITY, score_with=1, score_without=1, edges=['left_edge']
+[DEBUG] Struct 1: type=StructureType.ROAD, score_with=1, score_without=1, edges=['top_edge', 'right_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 2
+Edges list: ['left_edge']
+-- left_edge: StructureType.CITY
+[DEBUG] Evaluating struct 1: total score if meeple placed = 2
+[DEBUG] Final decision: score=2, best_edge=left_edge
+TILE MODEL: tile_type='J' pos=(0, 0) rotation=1
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: R7
+Tile tile: R7
+Tile tile: R7
+TILE: Tile J - (0, 0), STRUCT_TYPE: StructureType.CITY
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: J
+TILE: Tile J - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 2
+[DEBUG] Struct 0: type=StructureType.CITY, score_with=-99, score_without=0.0, edges=['right_edge']
+[DEBUG] Struct 1: type=StructureType.ROAD, score_with=1, score_without=1, edges=['bottom_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = -98.0
+Edges list: ['right_edge']
+-- right_edge: StructureType.CITY
+[DEBUG] Evaluating struct 1: total score if meeple placed = 1.0
+Edges list: ['bottom_edge', 'left_edge']
+-- bottom_edge: StructureType.ROAD
+-- left_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1.0, best_edge=bottom_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=1
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['top_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['top_edge', 'left_edge']
+-- top_edge: StructureType.ROAD
+-- left_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=top_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=2
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['top_edge', 'right_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['top_edge', 'right_edge']
+-- top_edge: StructureType.ROAD
+-- right_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=top_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=1
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['top_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['top_edge', 'left_edge']
+-- top_edge: StructureType.ROAD
+-- left_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=top_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=2
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['top_edge', 'right_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['top_edge', 'right_edge']
+-- top_edge: StructureType.ROAD
+-- right_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=top_edge
+TILE MODEL: tile_type='J' pos=(0, 0) rotation=3
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: J
+TILE: Tile J - (0, 0), STRUCT_TYPE: StructureType.CITY
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: J
+TILE: Tile J - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 2
+[DEBUG] Struct 0: type=StructureType.CITY, score_with=1, score_without=1, edges=['left_edge']
+[DEBUG] Struct 1: type=StructureType.ROAD, score_with=1, score_without=1, edges=['top_edge', 'right_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 2
+Edges list: ['left_edge']
+-- left_edge: StructureType.CITY
+[DEBUG] Evaluating struct 1: total score if meeple placed = 2
+[DEBUG] Final decision: score=2, best_edge=left_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=0
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: R3
+Tile tile: R3
+Tile tile: R3
+Tile tile: R3
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=-99, score_without=0.0, edges=['bottom_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = -99.0
+Edges list: ['bottom_edge', 'left_edge']
+-- bottom_edge: StructureType.ROAD
+-- left_edge: StructureType.ROAD
+[DEBUG] Final decision: score=-99.0, best_edge=bottom_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=1
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: R3
+Tile tile: R3
+Tile tile: R3
+Tile tile: R3
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=-99, score_without=0.0, edges=['top_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = -99.0
+Edges list: ['top_edge', 'left_edge']
+-- top_edge: StructureType.ROAD
+-- left_edge: StructureType.ROAD
+[DEBUG] Final decision: score=-99.0, best_edge=top_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=0
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: R3
+Tile tile: R3
+Tile tile: R3
+Tile tile: R3
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=-99, score_without=0.0, edges=['bottom_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = -99.0
+Edges list: ['bottom_edge', 'left_edge']
+-- bottom_edge: StructureType.ROAD
+-- left_edge: StructureType.ROAD
+[DEBUG] Final decision: score=-99.0, best_edge=bottom_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=1
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: R3
+Tile tile: R3
+Tile tile: R3
+Tile tile: R3
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=-99, score_without=0.0, edges=['top_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = -99.0
+Edges list: ['top_edge', 'left_edge']
+-- top_edge: StructureType.ROAD
+-- left_edge: StructureType.ROAD
+[DEBUG] Final decision: score=-99.0, best_edge=top_edge
+TILE MODEL: tile_type='J' pos=(0, 0) rotation=1
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: J
+TILE: Tile J - (0, 0), STRUCT_TYPE: StructureType.CITY
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: R3
+Tile tile: R3
+Tile tile: R3
+Tile tile: R3
+TILE: Tile J - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 2
+[DEBUG] Struct 0: type=StructureType.CITY, score_with=1, score_without=1, edges=['right_edge']
+[DEBUG] Struct 1: type=StructureType.ROAD, score_with=-99, score_without=0.0, edges=['bottom_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1.0
+Edges list: ['right_edge']
+-- right_edge: StructureType.CITY
+[DEBUG] Evaluating struct 1: total score if meeple placed = -98.0
+[DEBUG] Final decision: score=1.0, best_edge=right_edge
+TILE MODEL: tile_type='J' pos=(0, 0) rotation=2
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: J
+TILE: Tile J - (0, 0), STRUCT_TYPE: StructureType.CITY
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: R3
+Tile tile: R3
+Tile tile: R3
+Tile tile: R3
+TILE: Tile J - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 2
+[DEBUG] Struct 0: type=StructureType.CITY, score_with=1, score_without=1, edges=['bottom_edge']
+[DEBUG] Struct 1: type=StructureType.ROAD, score_with=-99, score_without=0.0, edges=['top_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1.0
+Edges list: ['bottom_edge']
+-- bottom_edge: StructureType.CITY
+[DEBUG] Evaluating struct 1: total score if meeple placed = -98.0
+[DEBUG] Final decision: score=1.0, best_edge=bottom_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=0
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['bottom_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['bottom_edge', 'left_edge']
+-- bottom_edge: StructureType.ROAD
+-- left_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=bottom_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=1
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['top_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['top_edge', 'left_edge']
+-- top_edge: StructureType.ROAD
+-- left_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=top_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=0
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['bottom_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['bottom_edge', 'left_edge']
+-- bottom_edge: StructureType.ROAD
+-- left_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=bottom_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=1
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['top_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['top_edge', 'left_edge']
+-- top_edge: StructureType.ROAD
+-- left_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=top_edge
+TILE MODEL: tile_type='J' pos=(0, 0) rotation=2
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: J
+TILE: Tile J - (0, 0), STRUCT_TYPE: StructureType.CITY
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: J
+TILE: Tile J - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 2
+[DEBUG] Struct 0: type=StructureType.CITY, score_with=1, score_without=1, edges=['bottom_edge']
+[DEBUG] Struct 1: type=StructureType.ROAD, score_with=1, score_without=1, edges=['top_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 2
+Edges list: ['bottom_edge']
+-- bottom_edge: StructureType.CITY
+[DEBUG] Evaluating struct 1: total score if meeple placed = 2
+[DEBUG] Final decision: score=2, best_edge=bottom_edge
+TILE MODEL: tile_type='J' pos=(0, 0) rotation=0
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: S
+Tile tile: S
+Tile tile: S
+Tile tile: S
+Tile tile: R1
+Tile tile: R1
+Tile tile: R1
+Tile tile: R1
+TILE: Tile J - (0, 0), STRUCT_TYPE: StructureType.CITY
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: J
+TILE: Tile J - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 2
+[DEBUG] Struct 0: type=StructureType.CITY, score_with=4, score_without=4, edges=['top_edge']
+[DEBUG] Struct 1: type=StructureType.ROAD, score_with=1, score_without=1, edges=['bottom_edge', 'right_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 5
+Edges list: ['top_edge']
+-- top_edge: StructureType.CITY
+[DEBUG] Evaluating struct 1: total score if meeple placed = 5
+[DEBUG] Final decision: score=5, best_edge=top_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=1
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['top_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['top_edge', 'left_edge']
+-- top_edge: StructureType.ROAD
+-- left_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=top_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=2
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['top_edge', 'right_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['top_edge', 'right_edge']
+-- top_edge: StructureType.ROAD
+-- right_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=top_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=1
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['top_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['top_edge', 'left_edge']
+-- top_edge: StructureType.ROAD
+-- left_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=top_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=2
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['top_edge', 'right_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['top_edge', 'right_edge']
+-- top_edge: StructureType.ROAD
+-- right_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=top_edge
+TILE MODEL: tile_type='J' pos=(0, 0) rotation=3
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: J
+TILE: Tile J - (0, 0), STRUCT_TYPE: StructureType.CITY
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: J
+TILE: Tile J - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 2
+[DEBUG] Struct 0: type=StructureType.CITY, score_with=1, score_without=1, edges=['left_edge']
+[DEBUG] Struct 1: type=StructureType.ROAD, score_with=1, score_without=1, edges=['top_edge', 'right_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 2
+Edges list: ['left_edge']
+-- left_edge: StructureType.CITY
+[DEBUG] Evaluating struct 1: total score if meeple placed = 2
+[DEBUG] Final decision: score=2, best_edge=left_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=2
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['top_edge', 'right_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['top_edge', 'right_edge']
+-- top_edge: StructureType.ROAD
+-- right_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=top_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=3
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['bottom_edge', 'right_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['bottom_edge', 'right_edge']
+-- bottom_edge: StructureType.ROAD
+-- right_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=bottom_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=2
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['top_edge', 'right_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['top_edge', 'right_edge']
+-- top_edge: StructureType.ROAD
+-- right_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=top_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=3
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['bottom_edge', 'right_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['bottom_edge', 'right_edge']
+-- bottom_edge: StructureType.ROAD
+-- right_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=bottom_edge
+TILE MODEL: tile_type='J' pos=(0, 0) rotation=0
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: J
+TILE: Tile J - (0, 0), STRUCT_TYPE: StructureType.CITY
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: J
+TILE: Tile J - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 2
+[DEBUG] Struct 0: type=StructureType.CITY, score_with=1, score_without=1, edges=['top_edge']
+[DEBUG] Struct 1: type=StructureType.ROAD, score_with=1, score_without=1, edges=['bottom_edge', 'right_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 2
+Edges list: ['top_edge']
+-- top_edge: StructureType.CITY
+[DEBUG] Evaluating struct 1: total score if meeple placed = 2
+[DEBUG] Final decision: score=2, best_edge=top_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=1
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: R3
+Tile tile: R3
+Tile tile: R3
+Tile tile: R3
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=-99, score_without=0.0, edges=['top_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = -99.0
+Edges list: ['top_edge', 'left_edge']
+-- top_edge: StructureType.ROAD
+-- left_edge: StructureType.ROAD
+[DEBUG] Final decision: score=-99.0, best_edge=top_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=2
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: R3
+Tile tile: R3
+Tile tile: R3
+Tile tile: R3
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=-99, score_without=0.0, edges=['top_edge', 'right_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = -99.0
+Edges list: ['top_edge', 'right_edge']
+-- top_edge: StructureType.ROAD
+-- right_edge: StructureType.ROAD
+[DEBUG] Final decision: score=-99.0, best_edge=top_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=1
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: R3
+Tile tile: R3
+Tile tile: R3
+Tile tile: R3
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=-99, score_without=0.0, edges=['top_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = -99.0
+Edges list: ['top_edge', 'left_edge']
+-- top_edge: StructureType.ROAD
+-- left_edge: StructureType.ROAD
+[DEBUG] Final decision: score=-99.0, best_edge=top_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=2
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: R3
+Tile tile: R3
+Tile tile: R3
+Tile tile: R3
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=-99, score_without=0.0, edges=['top_edge', 'right_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = -99.0
+Edges list: ['top_edge', 'right_edge']
+-- top_edge: StructureType.ROAD
+-- right_edge: StructureType.ROAD
+[DEBUG] Final decision: score=-99.0, best_edge=top_edge
+TILE MODEL: tile_type='J' pos=(0, 0) rotation=2
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: J
+TILE: Tile J - (0, 0), STRUCT_TYPE: StructureType.CITY
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: R3
+Tile tile: R3
+Tile tile: R3
+Tile tile: R3
+TILE: Tile J - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 2
+[DEBUG] Struct 0: type=StructureType.CITY, score_with=1, score_without=1, edges=['bottom_edge']
+[DEBUG] Struct 1: type=StructureType.ROAD, score_with=-99, score_without=0.0, edges=['top_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1.0
+Edges list: ['bottom_edge']
+-- bottom_edge: StructureType.CITY
+[DEBUG] Evaluating struct 1: total score if meeple placed = -98.0
+[DEBUG] Final decision: score=1.0, best_edge=bottom_edge
+TILE MODEL: tile_type='J' pos=(0, 0) rotation=3
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: J
+TILE: Tile J - (0, 0), STRUCT_TYPE: StructureType.CITY
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: R3
+Tile tile: R3
+Tile tile: R3
+Tile tile: R3
+TILE: Tile J - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 2
+[DEBUG] Struct 0: type=StructureType.CITY, score_with=1, score_without=1, edges=['left_edge']
+[DEBUG] Struct 1: type=StructureType.ROAD, score_with=-99, score_without=0.0, edges=['top_edge', 'right_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1.0
+Edges list: ['left_edge']
+-- left_edge: StructureType.CITY
+[DEBUG] Evaluating struct 1: total score if meeple placed = -98.0
+[DEBUG] Final decision: score=1.0, best_edge=left_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=1
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['top_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['top_edge', 'left_edge']
+-- top_edge: StructureType.ROAD
+-- left_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=top_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=1
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['top_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['top_edge', 'left_edge']
+-- top_edge: StructureType.ROAD
+-- left_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=top_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=0
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['bottom_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['bottom_edge', 'left_edge']
+-- bottom_edge: StructureType.ROAD
+-- left_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=bottom_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=3
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['bottom_edge', 'right_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['bottom_edge', 'right_edge']
+-- bottom_edge: StructureType.ROAD
+-- right_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=bottom_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=0
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['bottom_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['bottom_edge', 'left_edge']
+-- bottom_edge: StructureType.ROAD
+-- left_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=bottom_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=3
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['bottom_edge', 'right_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['bottom_edge', 'right_edge']
+-- bottom_edge: StructureType.ROAD
+-- right_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=bottom_edge
+TILE MODEL: tile_type='J' pos=(0, 0) rotation=1
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: J
+TILE: Tile J - (0, 0), STRUCT_TYPE: StructureType.CITY
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: J
+TILE: Tile J - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 2
+[DEBUG] Struct 0: type=StructureType.CITY, score_with=1, score_without=1, edges=['right_edge']
+[DEBUG] Struct 1: type=StructureType.ROAD, score_with=1, score_without=1, edges=['bottom_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 2
+Edges list: ['right_edge']
+-- right_edge: StructureType.CITY
+[DEBUG] Evaluating struct 1: total score if meeple placed = 2
+[DEBUG] Final decision: score=2, best_edge=right_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=1
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['top_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['top_edge', 'left_edge']
+-- top_edge: StructureType.ROAD
+-- left_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=top_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=2
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['top_edge', 'right_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['top_edge', 'right_edge']
+-- top_edge: StructureType.ROAD
+-- right_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=top_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=1
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['top_edge', 'left_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['top_edge', 'left_edge']
+-- top_edge: StructureType.ROAD
+-- left_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=top_edge
+TILE MODEL: tile_type='V' pos=(0, 0) rotation=2
+Tile tile: V
+Tile tile: V
+Tile tile: V
+Tile tile: V
+TILE: Tile V - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 1
+[DEBUG] Struct 0: type=StructureType.ROAD, score_with=1, score_without=1, edges=['top_edge', 'right_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 1
+Edges list: ['top_edge', 'right_edge']
+-- top_edge: StructureType.ROAD
+-- right_edge: StructureType.ROAD
+[DEBUG] Final decision: score=1, best_edge=top_edge
+TILE MODEL: tile_type='J' pos=(0, 0) rotation=3
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: J
+TILE: Tile J - (0, 0), STRUCT_TYPE: StructureType.CITY
+Tile tile: J
+Tile tile: J
+Tile tile: J
+Tile tile: J
+TILE: Tile J - (0, 0), STRUCT_TYPE: StructureType.ROAD
+[DEBUG] Total structures: 2
+[DEBUG] Struct 0: type=StructureType.CITY, score_with=1, score_without=1, edges=['left_edge']
+[DEBUG] Struct 1: type=StructureType.ROAD, score_with=1, score_without=1, edges=['top_edge', 'right_edge']
+[DEBUG] Evaluating struct 0: total score if meeple placed = 2
+Edges list: ['left_edge']
+-- left_edge: StructureType.CITY
+[DEBUG] Evaluating struct 1: total score if meeple placed = 2
+[DEBUG] Final decision: score=2, best_edge=left_edge
+Exiting this function!
+Num meeples: 6
+BEST MEEPLE OPTION: 33
+BEST NON MEEPLE OPTION: 33
+MEEPLE PLACED.
+MEEPLE ON STRUCT: top_edge
+MY CARDS: [Tile V - None, Tile V - None, Tile J - None]
+
+
+AVAILABLE TILES: {Tile F - None, Tile L - None, Tile P - None, Tile T - None, Tile B - None, Tile N - None, Tile E - None, Tile H - None, Tile W - None, Tile K - None, Tile U - None, Tile V - None, Tile A - None, Tile D - None, Tile R - None, Tile L - None, Tile E - None, Tile G - None, Tile O - None, Tile X - None, Tile B - None, Tile U - None, Tile V - None, Tile J - None, Tile Q - None, Tile K - None, Tile E - None, Tile I - None, Tile U - None, Tile N - None, Tile U - None, Tile V - None, Tile A - None, Tile P - None, Tile S - None, Tile W - None, Tile J - None, Tile M - None, Tile D - None, Tile B - None, Tile V - None, Tile V - None, Tile H - None, Tile E - None, Tile N - None, Tile F - None, Tile R - None, Tile B - None, Tile D - None, Tile U - None, Tile W - None, Tile U - None, Tile V - None, Tile I - None, Tile K - None, Tile E - None, Tile C - None, Tile M - None, Tile P - None, Tile V - None, Tile U - None, Tile H - None, Tile O - None, Tile D - None, Tile R - None, Tile W - None, Tile U - None}
+
+
+
+
+
+BEST OPTION IDENTIFIED: Tile J - (0, 0)
+MEEPLE?: True
+WHERE?:   top_edge
+WHICH IS? StructureType.CITY
+{<StructureType.CITY: 4>: [Tile S - (89, 83)], <StructureType.GRASS: 5>: [Tile R5 - (88, 84)]}
+
+=== SELECTED TILE PLACEMENT DEBUG ===
+Chosen Tile Type: J
+Chosen Tile Rotation: 0
+Chosen Tile Edge Structures:
+  Left   -> StructureType.GRASS
+  Right  -> StructureType.ROAD
+  Top    -> StructureType.CITY
+  Bottom -> StructureType.ROAD
+Placing at position: (89, 84)
+
+-- Neighbor at (88, 84) on left_edge:
+  Neighbor Tile Type: R5
+  Neighbor Rotation: 0
+  Neighbor Edge Structures:
+    Left   -> StructureType.RIVER
+    Right  -> StructureType.GRASS
+    Top    -> StructureType.RIVER
+    Bottom -> StructureType.GRASS
+  ↔ Comparing:
+    Your left_edge = StructureType.GRASS
+    vs Neighbor right_edge = StructureType.GRASS
+    → Match: YES ✅
+
+-- Neighbor at (90, 84) on right_edge:
+  [EMPTY]
+
+-- Neighbor at (89, 83) on top_edge:
+  Neighbor Tile Type: S
+  Neighbor Rotation: 1
+  Neighbor Edge Structures:
+    Left   -> StructureType.ROAD
+    Right  -> StructureType.CITY
+    Top    -> StructureType.CITY
+    Bottom -> StructureType.CITY
+  ↔ Comparing:
+    Your top_edge = StructureType.CITY
+    vs Neighbor bottom_edge = StructureType.CITY
+    → Match: YES ✅
+
+-- Neighbor at (89, 85) on bottom_edge:
+  [EMPTY]
+
+🚀 Sending tile: J, pos=(89, 84), rotation=0
+
+	. 72 ,  73 ,  74 ,  75 ,  76 ,  77 ,  78 ,  79 ,  80 ,  81 ,  82 ,  83 ,  84 ,  85 ,  86 ,  87 ,  88 , 
+75	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+76	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+77	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+78	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+79	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+80	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+81	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+82	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+83	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+84	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', 'RE', '__', '__', '__']
+85	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', 'R7', 'R1', 'R8', 'R2', 'R3', '__', '__', '__']
+86	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', 'R6', 'S ', '__', '__', '__', '__', '__', '__']
+87	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', 'R9', 'R2', 'R4', 'R5', '__', '__', '__', '__', '__', '__', '__']
+88	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', 'RS', '__', 'L ', '__', '__', '__', '__', '__', '__', '__', '__']
+89	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
+90	['__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__', '__']
