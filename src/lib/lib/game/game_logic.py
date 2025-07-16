@@ -120,7 +120,7 @@ class GameLogic(SharedGameState):
             if yield_cond(tile, edge):
                 yield tile, edge
 
-            connected_internal_edges = []
+            connected_internal_edges = [edge]
 
             for adjacent_edge in Tile.adjacent_edges(edge):
                 if tile.internal_edges[adjacent_edge] == structure_type:
