@@ -97,7 +97,7 @@ class Game:
                 has_any_neighbour = True
                 # print(tile.internal_edges[edge], edge, tile.rotation, tile.tile_type)
                 # print(neighbour_tile.internal_edges[edge_opposite[edge]])
-                if StructureType.is_compatible(
+                if not StructureType.is_compatible(
                     tile.internal_edges[edge],
                     neighbour_tile.internal_edges[edge_opposite[edge]],
                 ):

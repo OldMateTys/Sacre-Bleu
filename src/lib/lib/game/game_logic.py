@@ -84,7 +84,7 @@ class GameLogic(SharedGameState):
     def check_any_complete(self, start_tile: "Tile") -> list[str]:
         edges_complete: list[str] = []
         for edge, tile in start_tile.get_external_tiles(self.map._grid).items():
-            if tile and self._check_completed_component(tile, edge):
+            if tile and self._check_completed_component(start_tile, edge):
                 edges_complete.append(edge)
 
         return edges_complete
@@ -120,7 +120,7 @@ class GameLogic(SharedGameState):
             if yield_cond(tile, edge):
                 yield tile, edge
 
-            connected_internal_edges = []
+            connected_internal_edges = [edge]
 
             for adjacent_edge in Tile.adjacent_edges(edge):
                 if tile.internal_edges[adjacent_edge] == structure_type:
@@ -139,7 +139,7 @@ class GameLogic(SharedGameState):
                                 connected_internal_edges.append(adjacent_edge2)
 
             if (
-                not connected_internal_edges
+                len(connected_internal_edges) == 1
                 and structure_bridge
                 and structure_bridge in tile.modifiers
             ):
@@ -148,7 +148,6 @@ class GameLogic(SharedGameState):
                 ):
                     connected_internal_edges.append(Tile.get_opposite(edge))
 
-            connected_internal_edges.append(edge)
             if structure_type == StructureType.ROAD_START:
                 structure_type = StructureType.ROAD
 
@@ -166,7 +165,7 @@ class GameLogic(SharedGameState):
 
                     if (
                         structure_type == StructureType.ROAD
-                        and neighbouring_tile_edge == StructureType.ROAD_START
+                        and neighbouring_structure_type == StructureType.ROAD_START
                     ):
                         continue
 

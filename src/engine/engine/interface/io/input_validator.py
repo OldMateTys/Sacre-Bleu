@@ -1,7 +1,7 @@
 from copy import deepcopy
 from typing import TYPE_CHECKING
 
-from helper.utils import print_map
+# from helper.utils import print_map
 from lib.game.game_logic import TileModifier
 from engine.config.game_config import MAX_NUM_TILES_IN_HAND
 from lib.config.map_config import MONASTARY_IDENTIFIER, NUM_PLACEABLE_TILE_TYPES
@@ -63,9 +63,9 @@ class MoveValidator:
         tile: Tile
 
         # R3
-        print("Validator recieved tile type", e.tile.tile_type)
+        # print("Validator recieved tile type", e.tile.tile_type)
 
-        print_map(self.state.map._grid, range(75, 96))
+        # print_map(self.state.map._grid, range(75, 96))
 
         neighbouring_tiles = {
             edge: Tile.get_external_tile(edge, (x, y), self.state.map._grid)
