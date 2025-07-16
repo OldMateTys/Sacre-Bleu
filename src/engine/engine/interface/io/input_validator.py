@@ -127,7 +127,9 @@ class MoveValidator:
                 neighbouring_structure = neighbour_tile.internal_edges[
                     Tile.get_opposite(edge)
                 ]
-                if StructureType.is_compatible(edge_structure, neighbouring_structure):
+                if not StructureType.is_compatible(
+                    edge_structure, neighbouring_structure
+                ):
                     # print(tile.tile_type, tile.rotation)
                     # print(neighbour_tile.tile_type, neighbour_tile.rotation)
                     raise ValueError(
