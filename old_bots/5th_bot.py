@@ -61,12 +61,6 @@ class TileStructData:
                 self.compute_completed_score(game) * complete_probability +
                 nearby_monastary_points)  
 
-
-    def completion_prob(self, open_ends) -> float:
-        factor = 0.6 if self.struct_type in (StructureType.ROAD, StructureType.ROAD_START) else 1.0
-        return 1 / (1 + (factor * open_ends) ** 1.5)
-
-
     def compute_score_gain_without_meeple(self, game) -> float:
 
         # Without placing a meeple, nearby monasteries count towards points
@@ -76,29 +70,20 @@ class TileStructData:
         if self.struct_type == StructureType.MONASTARY:
             return point_total
 
-        # If we are not the dominant party on this structure, no points only nearby monastary.
-        if self.my_meeples_active * 2 < self.meeples_active:
-            return point_total
+        # If we are the equal or dominant party on this structure, points.
+        if self.my_meeples_active * 2 >= self.meeples_active:
 
-        # If completed, we get more points for 
-        if self.is_completed:
-            return (self.compute_completed_score(game) + 
-                    self.my_meeples_active * MEEPLE_FREE_SCORE_MODIFIER +
-                    point_total
-                    )
-        new_p = self.completion_prob(self.num_open_ends)
-        old_p = self.completion_prob(self.num_open_ends + 1)
-
-        completed = self.compute_completed_score(game)
-        incomplete = self.compute_incomplete_score(game)
-
-        ev_before = old_p * completed + (1 - old_p) * incomplete
-        ev_after  = new_p * completed + (1 - new_p) * incomplete
-
-        gain = ev_after - ev_before
-        return gain + incomplete + point_total
+            # If completed, we get more points for 
+            if self.is_completed:
+                return (self.compute_completed_score(game) + 
+                        self.my_meeples_active * MEEPLE_FREE_SCORE_MODIFIER +
+                        point_total
+                        )
+            else:
+                return self.compute_incomplete_score(game) + point_total
 
         # else we are not dominant, and receive no points for this structure.
+        return point_total
 
     def get_monastary_score(self, game):
         grid = game.state.map._grid
@@ -474,7 +459,7 @@ def bfs (game: Game, targStruct: StructureType, x: int, y: int, starting_edge: s
         return ()
 
     # print("\n\n\n")
-    print(f"============ START NEW BFS, struct: {targStruct}, xy = ({x}, {y}), edge: {starting_edge}, Tile: {tile}, rotation: {tile.rotation}")
+    # print(f"============ START NEW BFS, struct: {targStruct}, xy = ({x}, {y}), edge: {starting_edge}, Tile: {tile}, rotation: {tile.rotation}")
     
     que = deque()
     que.append((x, y, x, y))
@@ -503,9 +488,6 @@ def bfs (game: Game, targStruct: StructureType, x: int, y: int, starting_edge: s
             edges = [starting_edge] if starting_edge in tile.internal_edges else []
         else:
             edges = list(find_target_struct_edges(targStruct, tile))
-
-        print(f"-- Current Tile: {tile} | searchable edges: {edges}")
-        
 
         visited.add((x,y))
         count_structures += 1
