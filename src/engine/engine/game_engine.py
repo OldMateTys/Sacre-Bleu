@@ -27,7 +27,7 @@ from engine.state.state_mutator import StateMutator
 from lib.config.expansion import EXPANSION
 from lib.config.map_config import MAP_CENTER, TILE_EDGE_IDS, TILE_EXTERNAL_POS
 from lib.interact.structure import StructureType
-from lib.interact.tile import MONASTARY_IDENTIFIER, Tile
+from lib.interact.tile import MONASTARY_IDENTIFIER, NO_POINTS, Tile
 from lib.interface.events.event_game_ended import (
     EventGameEndedStaleMate,
 )
@@ -160,6 +160,10 @@ class GameEngine:
         )
         self.mutator.commit(response)
 
+        # Tile placed ended the game
+        if self.state.game_over:
+            return
+
         response2 = player.connection.query_place_meeple(
             self.state, self.validator, self.censor
         )
@@ -251,6 +255,7 @@ class GameEngine:
 
                 reward = len(subsribers[0].filled)
                 self.state.players[meeple.player_id].points += reward
+
                 meeple._free_meeple()
                 self.mutator.commit(
                     EventPlayerMeepleFreed(
@@ -272,6 +277,10 @@ class GameEngine:
 
             players = self.state._get_claims_objs(tile, edge)
             players_meeples = sorted(players.values(), key=len, reverse=True)
+            for player_meeples in players_meeples:
+                for m in player_meeples:
+                    assert m.placed is not None
+                    structures_visited.add((m.placed, m.placed_edge))
 
             partial_rewarded_meeples = [players_meeples[0][0]]
             returning_meeples = []
@@ -279,13 +288,6 @@ class GameEngine:
             assert (
                 partial_rewarded_meeples[0].placed is not None
                 and partial_rewarded_meeples[0].placed_edge != ""
-            )
-
-            structures_visited.add(
-                (
-                    partial_rewarded_meeples[0].placed,
-                    partial_rewarded_meeples[0].placed_edge,
-                )
             )
 
             for pm in players_meeples[1:]:
@@ -297,32 +299,33 @@ class GameEngine:
 
                 for m in pm:
                     assert m.placed is not None and m.placed_edge != ""
-                    structures_visited.add((m.placed, m.placed_edge))
 
             reward = self.state._get_reward(tile, edge, partial=True)
 
             for meeple in partial_rewarded_meeples:
                 self.state.players[meeple.player_id].points += reward
-                meeple._free_meeple()
+                assert meeple.placed
                 self.mutator.commit(
                     EventPlayerMeepleFreed(
                         player_id=meeple.player_id,
                         reward=reward,
-                        tile=tile._to_model(),
+                        tile=meeple.placed._to_model(),
                         placed_on=edge,
                     )
                 )
+                meeple._free_meeple()
 
             for meeple in returning_meeples:
-                meeple._free_meeple()
+                assert meeple.placed
                 self.mutator.commit(
                     EventPlayerMeepleFreed(
                         player_id=meeple.player_id,
-                        reward=0,
-                        tile=tile._to_model(),
+                        reward=NO_POINTS,
+                        tile=meeple.placed._to_model(),
                         placed_on=edge,
                     )
                 )
+                meeple._free_meeple()
 
         player, points = self.state.get_player_points()[0]
         self.mutator.commit(EventPlayerWon(player_id=player, points=points))
