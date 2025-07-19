@@ -7,6 +7,7 @@ from helper.game import Game
 from lib.config.map_config import MONASTARY_IDENTIFIER
 from lib.interact.structure import StructureType
 from lib.interact.tile import Tile, TileModifier
+from lib.interface.events.event_player_meeple_freed import EventPlayerMeepleFreed
 from lib.interface.events.moves.move_place_meeple import (
     MovePlaceMeeple,
     MovePlaceMeeplePass,
@@ -1048,6 +1049,12 @@ def handle_place_meeple(
     # debug_meeples(game)
 
     print(f"CURRENT SCORE: {game.state.me.points}", flush=True)
+    history = ""
+    for event in game.state.event_history:
+        add = False
+        if isinstance(event, MoveType) or isinstance(event, EventPlayerMeepleFreed):
+            pass
+
 
     if bot_state.place_meeple is True:
         assert(bot_state.place_meeple_on_edge is not None)
