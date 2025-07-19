@@ -1,6 +1,5 @@
-from re import sub
 from typing import cast
-from lib.interface.events.typing import EventPlayerWon
+from lib.interface.events.typing import EventPlayerTurnStarted, EventPlayerWon
 from engine.config.game_config import (
     MAX_ROUNDS,
     NUM_TILES_DRAWN_PER_ROUND,
@@ -89,6 +88,12 @@ class GameEngine:
 
             self.state.start_new_round()
 
+            # print(
+            #     "Points:",
+            #     [player.points for player in self.state.players.values()],
+            #     flush=True,
+            # )
+
             for player_id in turn_order:
                 if self.state.game_over:
                     break
@@ -132,9 +137,19 @@ class GameEngine:
 
             # If mutator ended game
             if self.state.game_over:
+                # print(
+                #     "Points SMGO:",
+                #     [player.points for player in self.state.players.values()],
+                #     flush=True,
+                # )
                 self.calc_final_points()
 
-            if self.state.round > MAX_ROUNDS:
+            elif self.state.round > MAX_ROUNDS:
+                # print(
+                #     "Points MRGO:",
+                #     [player.points for player in self.state.players.values()],
+                #     flush=True,
+                # )
                 self.mutator.commit(
                     EventGameEndedStaleMate(
                         reason="Reached maximum feasible round limit"
@@ -143,11 +158,16 @@ class GameEngine:
                 self.state.finalise_game()
                 self.calc_final_points()
 
-            if (
+            elif (
                 self.state.tiles_exhausted
                 and not self.state.river_phase
                 and not any(p.tiles for p in self.state.players.values())
             ):
+                # print(
+                #     "Points TOGO:",
+                #     [player.points for player in self.state.players.values()],
+                #     flush=True,
+                # )
                 self.mutator.commit(
                     EventGameEndedStaleMate(reason="All player tiles exhuasted")
                 )
@@ -155,6 +175,8 @@ class GameEngine:
                 self.calc_final_points()
 
     def start_player_turn(self, player: PlayerState) -> None:
+        self.mutator.commit(EventPlayerTurnStarted(player_id=player.id))
+
         response = player.connection.query_place_tile(
             self.state, self.validator, self.censor
         )
@@ -197,7 +219,6 @@ class GameEngine:
         self.state.map._grid[y1][x1] = river_end
         self.state.map.placed_tiles.append(river_end)
 
-        print("River End Tile")
         self.mutator.commit(EventRiverPhaseCompleted(end_tile=river_end._to_model()))
 
         if EXPANSION:
@@ -329,6 +350,11 @@ class GameEngine:
 
         player, points = self.state.get_player_points()[0]
         self.mutator.commit(EventPlayerWon(player_id=player, points=points))
+        print(
+            "Points FC:",
+            [player.points for player in self.state.players.values()],
+            flush=True,
+        )
 
     def finish(self) -> None:
         # Write the result.

@@ -103,7 +103,12 @@ class Game:
                 ):
                     print("Edge Missmatch")
                     break  # mismatch, try next rotation
-
+                #
+                if tile.internal_edges[edge] == StructureType.RIVER:
+                    river_check = self.state.map.river_validation(tile, x, y)
+                    if river_check != "pass":
+                        print(river_check)
+                        break
             else:
                 if has_any_neighbour:
                     print("Returning True")
