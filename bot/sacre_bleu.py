@@ -1049,11 +1049,11 @@ def handle_place_meeple(
     # debug_meeples(game)
 
     print(f"CURRENT SCORE: {game.state.me.points}", flush=True)
-    history = ""
-    for event in game.state.event_history:
-        add = False
-        if isinstance(event, MoveType) or isinstance(event, EventPlayerMeepleFreed):
-            pass
+    # history = ""
+    # for event in game.state.event_history:
+        # add = False
+        # if isinstance(event, MoveType) or isinstance(event, EventPlayerMeepleFreed):
+            # pass
 
 
     if bot_state.place_meeple is True:
