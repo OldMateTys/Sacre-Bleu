@@ -250,6 +250,7 @@ class TileData:
         return meeple_score - non_meeple_score, edge
 
     def compute_highest_score_with_immediate_meeple_return(self, game):
+
         best_edge = None
         highest_score = float('-inf')
 
@@ -257,30 +258,21 @@ class TileData:
 
         for i, struct in enumerate(self.features_info):
 
-            # 1. Only completed & empty
             if not (struct.is_completed and struct.meeples_active == 0):
                 continue
 
-            score_with  = struct.compute_score_gain_with_meeple(game)
+            score_with = struct.compute_score_gain_with_meeple(game)
             score_without = struct.compute_score_gain_without_meeple(game)
+
             score = total_non_meeple_scores - score_without + score_with
 
-            # 2. Filter edges to actually claimable ones
-            claimable_edges = [
-                e for e in struct.edges
-                if e and struct.tile.internal_claims[e] is None
-            ]
-            # Monastery/center claim special-case
-            if struct.struct_type == StructureType.MONASTARY:
-                claimable_edges = [MONASTARY_IDENTIFIER] if struct.tile.internal_claims[MONASTARY_IDENTIFIER] is None else []
-
-            if not claimable_edges:
-                continue
-
-            # 3. Tie-break & pick best
             if score > highest_score:
                 highest_score = score
-                best_edge = claimable_edges[0]    # or run your tie-breaker
+
+                if not self.features_info[i].edges:
+                    best_edge = None
+                else:
+                    best_edge = self.features_info[i].edges[0]
 
         return highest_score, best_edge
 
@@ -322,7 +314,7 @@ def analyse_board (game: Game, placement_list: list[tuple[int,int,int,Tile, int,
     
     best_score_with_meeple = float('-inf')
     best_score_without_meeple = float('-inf')
-    best_immediate_return_score = float('-inf')
+    best_immediate_return_score = float('inf')
 
     # indexes
     best_meeple_option = 0
@@ -389,7 +381,7 @@ def analyse_board (game: Game, placement_list: list[tuple[int,int,int,Tile, int,
             best_meeple_edge = meeple_edge
         if score_immediate_return > best_immediate_return_score:
             best_immediate_return_score = score_immediate_return
-            best_immediate_return_option = i
+            best_immediate_return_option = 1
             best_meeple_edge_immediate = meeple_edge_immediate
         if score_without_meeple > best_score_without_meeple:
             best_score_without_meeple = score_without_meeple
@@ -399,22 +391,15 @@ def analyse_board (game: Game, placement_list: list[tuple[int,int,int,Tile, int,
 
     x, y, r, tile, tile_idx, connection_types = placement_list[best_meeple_option]
 
-    delta = best_score_with_meeple - best_score_without_meeple
-
-    if (game.state.me.num_meeples > 1
-        and best_score_with_meeple >= 6 - game.state.me.num_meeples    # was 7 -
-        and delta >= 0.4):                                             # new: “worth it” floor
+    if (game.state.me.num_meeples > 1 and best_score_with_meeple >= 7 - game.state.me.num_meeples):
         place_meeple = True
         return best_meeple_option, place_meeple, best_meeple_edge, data[best_meeple_option]
-
-    elif (game.state.me.num_meeples == 1
-          and best_meeple_edge_immediate is not None
-          and best_immediate_return_score > 0                         # avoid nonsense negatives
-          and best_immediate_return_score >= 0.8 * best_score_without_meeple):  # was 0.6
+    elif (game.state.me.num_meeples == 1 
+          and best_immediate_return_score > 0.6 * best_score_without_meeple
+          and best_meeple_edge_immediate is not None):
         place_meeple = True
         print(f"PLACING IMMEDIATE: EDGE: {best_meeple_edge_immediate}")
         return best_immediate_return_option, place_meeple, best_meeple_edge_immediate, data[best_immediate_return_option]
-
     else:
         place_meeple = False
         return best_meeple_less_option, place_meeple, None, data[best_meeple_less_option]

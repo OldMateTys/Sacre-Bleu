@@ -58,5 +58,5 @@ def simulate(cmd: list[str], runs: int = 10):
 
 # Example usage:
 # Replace with your actual command (e.g. path to match_simulator.py)
-simulate(["python3", "match_simulator.py", "--submissions", "2:old_bots/5th_bot.py", "2:bot/sacre_bleu.py", "--engine"], runs=100)
+simulate(["python3", "match_simulator.py", "--submissions", "2:old_bots/first_heuristic_bot.py", "2:bot/sacre_bleu.py", "--engine"], runs=20)
 
